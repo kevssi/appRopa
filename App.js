@@ -95,83 +95,7 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: 3,
-    sku: 'DAL-KNT-03',
-    name: 'Jersey Cuello Mock Algodón Crudo',
-    type: 'punto',
-    typeName: 'Punto Suave',
-    price: 115.0,
-    originalPrice: 135.0,
-    discount: 15,
-    material: '85% Algodón Peinado, 15% Seda Mulberry',
-    fit: 'Corte Regular Slim',
-    care: 'Secar en plano sobre toalla.',
-    image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80',
-    colors: ['#F4F2EB', '#D2C3B2'],
-    sizes: ['S', 'M', 'L', 'XL'],
-    stock: 14,
-    active: true,
-    isNew: true
-  },
-  {
-    id: 4,
-    sku: 'DAL-OUT-04',
-    name: 'Gabardina Fluida Piedra Pálido',
-    type: 'capas',
-    typeName: 'Capas & Outerwear',
-    price: 175.0,
-    originalPrice: 210.0,
-    discount: 17,
-    material: '70% Algodón Repelente, 30% Poliamida Reciclada',
-    fit: 'Corte Oversize Estructurado',
-    care: 'Limpieza en seco recomendada.',
-    image: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80',
-    colors: ['#D8D4CC', '#4A5B4F'],
-    sizes: ['S', 'M', 'L'],
-    stock: 9,
-    active: true,
-    isNew: true
-  },
-  {
-    id: 5,
-    sku: 'DAL-TEE-05',
-    name: 'Camiseta Pesada Cuello Caja Carbón',
-    type: 'lino',
-    typeName: 'Lino Orgánico',
-    price: 46.0,
-    originalPrice: 46.0,
-    discount: 0,
-    material: '100% Algodón Orgánico Cardado 260g',
-    fit: 'Corte Boxy Fit',
-    care: 'Lavar del revés a máquina.',
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
-    colors: ['#242426', '#FFFFFF'],
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    stock: 35,
-    active: true,
-    isNew: false
-  },
-  {
-    id: 6,
-    sku: 'DAL-BLZ-06',
-    name: 'Blazer Desestructurado Lino Arcilla',
-    type: 'sastreria',
-    typeName: 'Sastrería Fluida',
-    price: 160.0,
-    originalPrice: 195.0,
-    discount: 18,
-    material: '55% Lino Francés, 45% Viscosa Sostenible',
-    fit: 'Sastrería Relajada',
-    care: 'Limpieza profesional.',
-    image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80',
-    colors: ['#B77C68', '#C4B59D'],
-    sizes: ['S', 'M', 'L'],
-    stock: 11,
-    active: true,
-    isNew: false
-  },
-  {
-    id: 7,
-    sku: 'DAL-FTW-07',
+    sku: 'DAL-FTW-03',
     name: 'Mocasín Flexible Cuero Crudo',
     type: 'calzado',
     typeName: 'Calzado & Cuero',
@@ -189,8 +113,46 @@ const INITIAL_PRODUCTS = [
     isNew: true
   },
   {
-    id: 8,
-    sku: 'DAL-VES-08',
+    id: 4,
+    sku: 'DAL-KNT-04',
+    name: 'Jersey Cuello Mock Algodón Crudo',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 115.0,
+    originalPrice: 135.0,
+    discount: 15,
+    material: '85% Algodón Peinado, 15% Seda Mulberry',
+    fit: 'Corte Regular Slim',
+    care: 'Secar en plano sobre toalla.',
+    image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80',
+    colors: ['#F4F2EB', '#D2C3B2'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 14,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 5,
+    sku: 'DAL-OUT-05',
+    name: 'Gabardina Fluida Piedra Pálido',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 175.0,
+    originalPrice: 210.0,
+    discount: 17,
+    material: '70% Algodón Repelente, 30% Poliamida Reciclada',
+    fit: 'Corte Oversize Estructurado',
+    care: 'Limpieza en seco recomendada.',
+    image: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80',
+    colors: ['#D8D4CC', '#4A5B4F'],
+    sizes: ['S', 'M', 'L'],
+    stock: 9,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 6,
+    sku: 'DAL-VES-06',
     name: 'Vestido Camisero Midi Popelín',
     type: 'lino',
     typeName: 'Lino Orgánico',
@@ -206,6 +168,1032 @@ const INITIAL_PRODUCTS = [
     stock: 12,
     active: true,
     isNew: true
+  },
+  {
+    id: 7,
+    sku: 'DAL-BLZ-07',
+    name: 'Blazer Desestructurado Lino Arcilla',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 160.0,
+    originalPrice: 195.0,
+    discount: 18,
+    material: '55% Lino Francés, 45% Viscosa Sostenible',
+    fit: 'Sastrería Relajada',
+    care: 'Limpieza profesional.',
+    image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80',
+    colors: ['#B77C68', '#C4B59D'],
+    sizes: ['S', 'M', 'L'],
+    stock: 11,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 8,
+    sku: 'DAL-SNK-08',
+    name: 'Zapatilla Urbana Piel Napa Blanca',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 148.0,
+    originalPrice: 175.0,
+    discount: 15,
+    material: 'Piel Bovina Italiana y Suela Látex Natural',
+    fit: 'Calce Cómodo Todo el Día',
+    care: 'Limpiar con paño húmedo.',
+    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80',
+    colors: ['#F9F9F9', '#DCD8CF'],
+    sizes: ['39', '40', '41', '42', '43'],
+    stock: 18,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 9,
+    sku: 'DAL-KNT-09',
+    name: 'Cárdigan Abierto Merino Marfil',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 128.0,
+    originalPrice: 150.0,
+    discount: 15,
+    material: '100% Lana Merino Extrafina 19.5µ',
+    fit: 'Corte Amplio de Hombros Caídos',
+    care: 'Secar en plano horizontal.',
+    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80',
+    colors: ['#F7F5EE', '#8C7E6D'],
+    sizes: ['S', 'M', 'L'],
+    stock: 16,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 10,
+    sku: 'DAL-SAF-10',
+    name: 'Chaqueta Safari Lino Encerado',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 168.0,
+    originalPrice: 195.0,
+    discount: 14,
+    material: 'Lino Grueso Encerado al Agua',
+    fit: 'Cuatro Bolsillos de Parche y Cinturón',
+    care: 'Limpiar con esponja húmeda.',
+    image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80',
+    colors: ['#7A6D56', '#2F332D'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 9,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 11,
+    sku: 'DAL-TEE-11',
+    name: 'Camiseta Pesada Cuello Caja Carbón',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 46.0,
+    originalPrice: 46.0,
+    discount: 0,
+    material: '100% Algodón Orgánico Cardado 260g',
+    fit: 'Corte Boxy Fit',
+    care: 'Lavar del revés a máquina.',
+    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+    colors: ['#242426', '#FFFFFF'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    stock: 35,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 12,
+    sku: 'DAL-PAL-12',
+    name: 'Pantalón Palazzo Sarga Nude',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 112.0,
+    originalPrice: 130.0,
+    discount: 14,
+    material: '100% Sarga de Algodón Pima Peinado',
+    fit: 'Pierna Extra Ancha de Caída Suave',
+    care: 'Planchado tibio.',
+    image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=800&q=80',
+    colors: ['#E8DFC8', '#262422'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 17,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 13,
+    sku: 'DAL-SAN-13',
+    name: 'Sandalia Tiras Cruzadas Cuero',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 110.0,
+    originalPrice: 130.0,
+    discount: 15,
+    material: '100% Piel Flor Curtido Natural, Planta Anatómica',
+    fit: 'Ajuste Ergonómico',
+    care: 'Hidratar con bálsamo natural.',
+    image: 'https://images.unsplash.com/photo-1550614000-4895a10e1bfd?auto=format&fit=crop&w=800&q=80',
+    colors: ['#7A4B29', '#1C1B1A'],
+    sizes: ['38', '39', '40', '41', '42'],
+    stock: 20,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 14,
+    sku: 'DAL-POLO-14',
+    name: 'Suéter Cuello Polo Hilo Suave',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 99.0,
+    originalPrice: 99.0,
+    discount: 0,
+    material: '80% Algodón Pima, 20% Cashmere',
+    fit: 'Ajuste Regular Natural',
+    care: 'Lavar a mano a 20°C.',
+    image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80',
+    colors: ['#4E5B50', '#D6CEC2'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 23,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 15,
+    sku: 'DAL-PRK-15',
+    name: 'Parka Cortaviento Repelente Mineral',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 152.0,
+    originalPrice: 180.0,
+    discount: 15,
+    material: 'Algodón Técnico Hidrófugo Mate',
+    fit: 'Silueta Flotante con Capucha Oculta',
+    care: 'Lavar en frío sin suavizante.',
+    image: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?auto=format&fit=crop&w=800&q=80',
+    colors: ['#3A3E3B', '#CFCCC4'],
+    sizes: ['S', 'M', 'L'],
+    stock: 11,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 16,
+    sku: 'DAL-LINO-16',
+    name: 'Blusa Cuello Mao Lino Crudo',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 76.0,
+    originalPrice: 92.0,
+    discount: 17,
+    material: '100% Lino Belga Prelavado',
+    fit: 'Corte Holgado Contemporáneo',
+    care: 'Planchar a vapor con prenda húmeda.',
+    image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=800&q=80',
+    colors: ['#EFECE6', '#524F4A'],
+    sizes: ['S', 'M', 'L'],
+    stock: 22,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 17,
+    sku: 'DAL-VST-17',
+    name: 'Chaleco Sastre Botones Corozo',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 88.0,
+    originalPrice: 105.0,
+    discount: 16,
+    material: '50% Lino, 50% Algodón Crudo',
+    fit: 'Corte Recto Desestructurado',
+    care: 'Limpieza en seco o lavado suave.',
+    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80',
+    colors: ['#EFECE6', '#B77C68'],
+    sizes: ['S', 'M', 'L'],
+    stock: 21,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 18,
+    sku: 'DAL-CHE-18',
+    name: 'Bota Chelsea Piel Flexible Arena',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 165.0,
+    originalPrice: 195.0,
+    discount: 15,
+    material: 'Ante Hidrófugo Tratado y Elásticos Laterales',
+    fit: 'Ajuste Suave al Tobillo',
+    care: 'Cepillar en seco.',
+    image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80',
+    colors: ['#C4B7A6', '#2F2D2A'],
+    sizes: ['40', '41', '42', '43', '44'],
+    stock: 15,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 19,
+    sku: 'DAL-CLD-19',
+    name: 'Jersey Calado Bruma Matinal',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 105.0,
+    originalPrice: 125.0,
+    discount: 16,
+    material: '100% Hilo de Seda Rústica y Algodón',
+    fit: 'Tejido Abierto Liviano',
+    care: 'Guardar doblado, no colgar.',
+    image: 'https://images.unsplash.com/photo-1578932750294-f5075e85f44a?auto=format&fit=crop&w=800&q=80',
+    colors: ['#C4B59D', '#EFECE6'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 13,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 20,
+    sku: 'DAL-OVS-20',
+    name: 'Sobrecamisa Acolchada Canela',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 142.0,
+    originalPrice: 142.0,
+    discount: 0,
+    material: 'Exterior Lino Pesado, Relleno Térmico Reciclado',
+    fit: 'Corte Boxy Oversize',
+    care: 'Lavado corto a 30°C.',
+    image: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=800&q=80',
+    colors: ['#9E6845', '#3A3836'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 14,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 21,
+    sku: 'DAL-BER-21',
+    name: 'Bermuda Plisada Lino Oliva',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 68.0,
+    originalPrice: 68.0,
+    discount: 0,
+    material: '100% Lino Rústico Transpirable',
+    fit: 'Corte Recto por la Rodilla',
+    care: 'Lavar en ciclo delicado.',
+    image: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=800&q=80',
+    colors: ['#536B58', '#E4DFD3'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 28,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 22,
+    sku: 'DAL-SUIT-22',
+    name: 'Traje Dos Piezas Arena Calmo',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 245.0,
+    originalPrice: 290.0,
+    discount: 15,
+    material: 'Lana Fría Tropical 120s y Seda',
+    fit: 'Sastrería Relajada Contemporánea',
+    care: 'Limpieza profesional recomendada.',
+    image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80',
+    colors: ['#D6CEC2', '#3D453E'],
+    sizes: ['48', '50', '52', '54'],
+    stock: 7,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 23,
+    sku: 'DAL-MUL-23',
+    name: 'Mule Destalonado Cuero Chocolate',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 125.0,
+    originalPrice: 125.0,
+    discount: 0,
+    material: 'Cuero Semibrillo Flexible, Tacón Bloque 2cm',
+    fit: 'Fiel a la Talla',
+    care: 'Crema incolora nutritiva.',
+    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80',
+    colors: ['#422918', '#A48261'],
+    sizes: ['37', '38', '39', '40', '41'],
+    stock: 12,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 24,
+    sku: 'DAL-KNT-24',
+    name: 'Jersey Trenzado Lana Merino Ocre',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 135.0,
+    originalPrice: 160.0,
+    discount: 16,
+    material: '100% Lana Merino Virgen de Cosecha Responsable',
+    fit: 'Tejido Grueso Suave Estructurado',
+    care: 'Lavar a mano con jabón neutro.',
+    image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=800&q=80',
+    colors: ['#C48F42', '#EFECE6'],
+    sizes: ['S', 'M', 'L'],
+    stock: 14,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 25,
+    sku: 'DAL-OUT-25',
+    name: 'Abrigo Batín Lana y Cachemira Camel',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 260.0,
+    originalPrice: 310.0,
+    discount: 16,
+    material: '80% Lana Doble Faz, 20% Cachemira Orgánica',
+    fit: 'Corte Maxi Envolvente con Cinturón',
+    care: 'Limpieza especializada en seco.',
+    image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80',
+    colors: ['#A67C52', '#3D3833'],
+    sizes: ['S', 'M', 'L'],
+    stock: 8,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 26,
+    sku: 'DAL-SHI-26',
+    name: 'Camisa Fluida Añil Lavado',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 94.0,
+    originalPrice: 115.0,
+    discount: 18,
+    material: '70% Lino Orgánico, 30% Tencel',
+    fit: 'Corte Regular Drapeado',
+    care: 'Secar a la sombra.',
+    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80',
+    colors: ['#4E6578', '#EFECE6'],
+    sizes: ['M', 'L', 'XL'],
+    stock: 15,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 27,
+    sku: 'DAL-DBL-27',
+    name: 'Blazer Cruzado Grafito Mate',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 185.0,
+    originalPrice: 220.0,
+    discount: 16,
+    material: '70% Lana Virgen, 30% Seda',
+    fit: 'Doble Abotonadura Moderna',
+    care: 'Limpieza especializada.',
+    image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80',
+    colors: ['#2B2B2E', '#8A9A86'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 10,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 28,
+    sku: 'DAL-DER-28',
+    name: 'Zapato Derby Cuero Envejecido',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 170.0,
+    originalPrice: 195.0,
+    discount: 13,
+    material: '100% Cuero Vacuno Plena Flor, Cosido Blake',
+    fit: 'Horma Clásica Ergonómica',
+    care: 'Crema hidratante y cepillado crin.',
+    image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80',
+    colors: ['#5A3B28', '#1F1B18'],
+    sizes: ['40', '41', '42', '43', '44'],
+    stock: 11,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 29,
+    sku: 'DAL-KNT-29',
+    name: 'Top Punto Espalda Descubierta',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 82.0,
+    originalPrice: 98.0,
+    discount: 16,
+    material: '70% Viscosa Sostenible, 30% Hilo Lino Fino',
+    fit: 'Silueta Entallada con Caída',
+    care: 'Lavar en bolsa de red protectora.',
+    image: 'https://images.unsplash.com/photo-1618244972963-dbee1a7edc95?auto=format&fit=crop&w=800&q=80',
+    colors: ['#D9C6B0', '#2C2B29'],
+    sizes: ['XS', 'S', 'M'],
+    stock: 19,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 30,
+    sku: 'DAL-TRN-30',
+    name: 'Trench Coat Oversize Beige Puro',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 215.0,
+    originalPrice: 250.0,
+    discount: 14,
+    material: '100% Gabardina de Algodón Peinado Hidro-Repelente',
+    fit: 'Corte Maxi Flotante con Dragona en Hombros',
+    care: 'Plancha tibia sin vapor.',
+    image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    colors: ['#D5C9B7', '#42413E'],
+    sizes: ['S', 'M', 'L'],
+    stock: 10,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 31,
+    sku: 'DAL-TUN-31',
+    name: 'Vestido Túnica Lino Arena',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 132.0,
+    originalPrice: 155.0,
+    discount: 15,
+    material: '100% Lino de Cosecha Sostenible',
+    fit: 'Silueta Éterea Maxi',
+    care: 'Lavar a mano en agua fría.',
+    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80',
+    colors: ['#D6CDBF', '#383633'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 8,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 32,
+    sku: 'DAL-SKR-32',
+    name: 'Falda Midi Abertura Frontal',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 92.0,
+    originalPrice: 92.0,
+    discount: 0,
+    material: '100% Viscosa Pesada Eco-Tex',
+    fit: 'Tiro Alto con Abertura Discreta',
+    care: 'Lavar en frío.',
+    image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=800&q=80',
+    colors: ['#A89279', '#1A1918'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 14,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 33,
+    sku: 'DAL-SNK-33',
+    name: 'Sneaker Retro Piel Suave Crema',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 140.0,
+    originalPrice: 165.0,
+    discount: 15,
+    material: 'Piel Nubuck Grano Fino y Forro Transpirable',
+    fit: 'Suela Amortiguada para Caminata',
+    care: 'Limpiar con cepillo de cerdas suaves.',
+    image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+    colors: ['#EAE4D7', '#938B80'],
+    sizes: ['39', '40', '41', '42', '43', '44'],
+    stock: 16,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 34,
+    sku: 'DAL-KNT-34',
+    name: 'Jersey Cuello Redondo Lana Alpaca',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 145.0,
+    originalPrice: 175.0,
+    discount: 17,
+    material: '60% Baby Alpaca, 40% Lana Merino Orgánica',
+    fit: 'Corte Cuadrado Abrigador',
+    care: 'Secar extendido horizontalmente.',
+    image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=800&q=80',
+    colors: ['#C9B89D', '#3F443E'],
+    sizes: ['S', 'M', 'L'],
+    stock: 12,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 35,
+    sku: 'DAL-OUT-35',
+    name: 'Abrigo Minimalista Lana Alpaca',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 275.0,
+    originalPrice: 320.0,
+    discount: 14,
+    material: '70% Lana Virgen Alpina, 30% Alpaca Peruana',
+    fit: 'Estructura Recta sin Solapas',
+    care: 'Limpieza en seco profesional.',
+    image: 'https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?auto=format&fit=crop&w=800&q=80',
+    colors: ['#2F3033', '#8B7F72'],
+    sizes: ['S', 'M', 'L'],
+    stock: 7,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 36,
+    sku: 'DAL-JOG-36',
+    name: 'Pantalón Jogger Lino Tabaco',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 84.0,
+    originalPrice: 84.0,
+    discount: 0,
+    material: '80% Lino Europeo, 20% Algodón',
+    fit: 'Tiro Alto con Cordón Ceñidor',
+    care: 'Lavar del revés a 30°C.',
+    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
+    colors: ['#8C5D3D', '#EFECE6'],
+    sizes: ['S', 'M', 'L'],
+    stock: 19,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 37,
+    sku: 'DAL-CRG-37',
+    name: 'Pantalón Cargo Sastrería Crema',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 119.0,
+    originalPrice: 140.0,
+    discount: 15,
+    material: 'Sarga de Algodón Egipcio y Seda',
+    fit: 'Bolsillos Planos Integrados y Caída Ancha',
+    care: 'Lavar en frío.',
+    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80',
+    colors: ['#E6DEC9', '#474540'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 15,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 38,
+    sku: 'DAL-BOT-38',
+    name: 'Botín Cordones Cuero Artesanal',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 185.0,
+    originalPrice: 215.0,
+    discount: 14,
+    material: 'Cuero Encerado Rústico y Suela Vibram Ligera',
+    fit: 'Caña Media con Plantilla Anatómica',
+    care: 'Tratar con grasa de caballo natural.',
+    image: 'https://images.unsplash.com/photo-1534653299134-96a1713c70c9?auto=format&fit=crop&w=800&q=80',
+    colors: ['#4A2E1B', '#1B1917'],
+    sizes: ['40', '41', '42', '43', '44'],
+    stock: 10,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 39,
+    sku: 'DAL-KNT-39',
+    name: 'Jersey Trenzado Cuello Redondo Humo',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 110.0,
+    originalPrice: 130.0,
+    discount: 15,
+    material: '100% Hilo de Bambú y Algodón Pima',
+    fit: 'Tacto Sedoso Ultraligero',
+    care: 'Lavar en programa de lana.',
+    image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=800&q=80',
+    colors: ['#A4A09B', '#E5E1D8'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 22,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 40,
+    sku: 'DAL-BKR-40',
+    name: 'Cazadora Cuero Suave Estilo Biker',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 255.0,
+    originalPrice: 299.0,
+    discount: 15,
+    material: 'Piel Ovina Napa Extra Suave con Forro Seda',
+    fit: 'Corte Entallado Moderno con Cremalleras Ocultas',
+    care: 'Especialista en pieles.',
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
+    colors: ['#1C1B1A', '#524338'],
+    sizes: ['S', 'M', 'L'],
+    stock: 8,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 41,
+    sku: 'DAL-VES-41',
+    name: 'Vestido Tirantes Lino Terracota',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 122.0,
+    originalPrice: 145.0,
+    discount: 16,
+    material: '100% Lino Orgánico Teñido con Arcillas Naturales',
+    fit: 'Línea A con Espalda Cruzada',
+    care: 'Lavar en frío, no retorcer.',
+    image: 'https://images.unsplash.com/photo-1495385794356-15371f348c31?auto=format&fit=crop&w=800&q=80',
+    colors: ['#B86B53', '#EBD8C8'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 13,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 42,
+    sku: 'DAL-PNT-42',
+    name: 'Pantalón Cigarrette Corte Sastre',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 105.0,
+    originalPrice: 125.0,
+    discount: 16,
+    material: 'Lana Fría Elástica y Modal Italiano',
+    fit: 'Tiro Alto con Raya Marcada Permanente',
+    care: 'Lavado en seco.',
+    image: 'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?auto=format&fit=crop&w=800&q=80',
+    colors: ['#3A3E45', '#C2BCB0'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 17,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 43,
+    sku: 'DAL-CHK-43',
+    name: 'Deportiva Chunky Minimal Monocromo',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 155.0,
+    originalPrice: 185.0,
+    discount: 16,
+    material: 'Cuero Grano y Microfibra Técnica Reciclada',
+    fit: 'Suela Ligera EVA de Alta Amortiguación',
+    care: 'Limpiar con espuma en seco.',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
+    colors: ['#F3EFEA', '#B5ACA0'],
+    sizes: ['38', '39', '40', '41', '42'],
+    stock: 14,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 44,
+    sku: 'DAL-PLM-44',
+    name: 'Chaqueta Plumón Acolchada Crudo',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 188.0,
+    originalPrice: 220.0,
+    discount: 15,
+    material: 'Tejido Mate Cortaviento y Relleno Ecológico DuPont',
+    fit: 'Silueta Cocoon Corta y Cuello Alto',
+    care: 'Lavar con pelotas de tenis en secadora suave.',
+    image: 'https://images.unsplash.com/photo-1574201635302-388dd92a4c3f?auto=format&fit=crop&w=800&q=80',
+    colors: ['#EFECE6', '#383531'],
+    sizes: ['S', 'M', 'L'],
+    stock: 9,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 45,
+    sku: 'DAL-SHI-45',
+    name: 'Camisa Rayas Finas Lino Marítimo',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 92.0,
+    originalPrice: 110.0,
+    discount: 16,
+    material: '100% Lino Francés con Rayas Tejidas en Telar',
+    fit: 'Corte Clásico Relajado',
+    care: 'Planchar con vapor medio.',
+    image: 'https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=800&q=80',
+    colors: ['#415B76', '#FFFFFF'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 25,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 46,
+    sku: 'DAL-TRJ-46',
+    name: 'Traje Monocromo Verde Eucalipto',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 258.0,
+    originalPrice: 310.0,
+    discount: 17,
+    material: 'Lana Fría y Lino Irlandés con Forro Cupro',
+    fit: 'Chaqueta Simple Abotonadura y Pantalón Fluido',
+    care: 'Limpieza especializada.',
+    image: 'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=800&q=80',
+    colors: ['#4E5D52', '#C6BFB3'],
+    sizes: ['48', '50', '52', '54'],
+    stock: 8,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 47,
+    sku: 'DAL-PEN-47',
+    name: 'Mocasín Piel Penny Loafer Coñac',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 162.0,
+    originalPrice: 190.0,
+    discount: 15,
+    material: '100% Piel Bovina Flor Brillada con Pátina Artesanal',
+    fit: 'Fiel a la Talla con Interior Acolchado',
+    care: 'Brillo con gamuza de algodón.',
+    image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80',
+    colors: ['#8A4B24', '#211E1C'],
+    sizes: ['40', '41', '42', '43', '44'],
+    stock: 13,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 48,
+    sku: 'DAL-KNT-48',
+    name: 'Suéter Cuello Cisne Cashmere Grafito',
+    type: 'punto',
+    typeName: 'Punto Suave',
+    price: 158.0,
+    originalPrice: 190.0,
+    discount: 17,
+    material: '50% Cachemira Mongola, 50% Lana Merino Extrafina',
+    fit: 'Corte Regular con Ribete Acanalado Fino',
+    care: 'Lavar con champú para lana a mano.',
+    image: 'https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?auto=format&fit=crop&w=800&q=80',
+    colors: ['#3A393E', '#9E9C97'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 15,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 49,
+    sku: 'DAL-JKT-49',
+    name: 'Sobrecamisa Algodón Cepillado Mostaza',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 115.0,
+    originalPrice: 135.0,
+    discount: 15,
+    material: '100% Algodón Pesado de Telar Tradicional 320g',
+    fit: 'Corte Boxy con Bolsillos de Solapa',
+    care: 'Lavar a máquina a 30°C.',
+    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80',
+    colors: ['#C48A36', '#2F2E2C'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 16,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 50,
+    sku: 'DAL-VES-50',
+    name: 'Vestido Fluido Escote Halter Nude',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 138.0,
+    originalPrice: 165.0,
+    discount: 16,
+    material: '60% Lino Orgánico, 40% Viscosa Brillante',
+    fit: 'Silueta Columna con Caída en la Espalda',
+    care: 'Lavar a mano en agua fría.',
+    image: 'https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?auto=format&fit=crop&w=800&q=80',
+    colors: ['#EADBCB', '#6F6359'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 11,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 51,
+    sku: 'DAL-BER-51',
+    name: 'Bermuda Sastrería Lino Antracita',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 78.0,
+    originalPrice: 92.0,
+    discount: 15,
+    material: '70% Lino Pesado, 30% Lana Fría',
+    fit: 'Pinzas Delanteras y Cintura Limpia',
+    care: 'Lavar en frío y planchar tibio.',
+    image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=800&q=80',
+    colors: ['#35363A', '#D9D5CC'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 20,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 52,
+    sku: 'DAL-TOT-52',
+    name: 'Bolso Tote Cuero Grano Arena',
+    type: 'calzado',
+    typeName: 'Calzado & Cuero',
+    price: 158.0,
+    originalPrice: 185.0,
+    discount: 15,
+    material: '100% Cuero Vacuno con Acabado Grano Natural y Costuras Vistas',
+    fit: 'Gran Capacidad con Compartimento Interno',
+    care: 'Nutrir con bálsamo específico.',
+    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80',
+    colors: ['#D2B79A', '#1F1E1D'],
+    sizes: ['Única'],
+    stock: 14,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 53,
+    sku: 'DAL-VNT-53',
+    name: 'Camisa Cuadro Ventana Lino Gris',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 88.0,
+    originalPrice: 88.0,
+    discount: 0,
+    material: '100% Lino Natural Hilado en Seco',
+    fit: 'Corte Recto Tradicional',
+    care: 'Lavar a máquina suave.',
+    image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+    colors: ['#8C8C91', '#FFFFFF'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 21,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 54,
+    sku: 'DAL-KIM-54',
+    name: 'Kimono Estructurado Seda Wabi',
+    type: 'sastreria',
+    typeName: 'Sastrería Fluida',
+    price: 195.0,
+    originalPrice: 230.0,
+    discount: 15,
+    material: 'Seda Rústica y Algodón Orgánico Japonés',
+    fit: 'Mangas Amplias y Cinturón Obi Extraíble',
+    care: 'Limpieza en seco profesional.',
+    image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?auto=format&fit=crop&w=800&q=80',
+    colors: ['#282A2E', '#9E856E'],
+    sizes: ['S', 'M', 'L'],
+    stock: 9,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 55,
+    sku: 'DAL-DNM-55',
+    name: 'Camisa Vaquera Deslavada Artesanal',
+    type: 'capas',
+    typeName: 'Capas & Outerwear',
+    price: 98.0,
+    originalPrice: 115.0,
+    discount: 15,
+    material: '100% Denim Algodón Orgánico 8oz Lavado al Ozono',
+    fit: 'Corte Relajado con Botones de Nácar',
+    care: 'Lavar del revés para preservar tono.',
+    image: 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=800&q=80',
+    colors: ['#5C748C', '#DCD3C7'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 18,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 56,
+    sku: 'DAL-RST-56',
+    name: 'Camisa Resort Estampado Botánico',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 85.0,
+    originalPrice: 105.0,
+    discount: 19,
+    material: 'Lino Ligero 100% con Tintes Vegetales',
+    fit: 'Cuello Camp y Silueta Amplia de Verano',
+    care: 'Lavar en frío.',
+    image: 'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80',
+    colors: ['#617362', '#EFECE6'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 24,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 57,
+    sku: 'DAL-MAX-57',
+    name: 'Vestido Maxi Lino Rústico Canela',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 148.0,
+    originalPrice: 175.0,
+    discount: 15,
+    material: '100% Lino Pesado con Aberturas Laterales',
+    fit: 'Caída Recta Estilizada de Gran Movimiento',
+    care: 'Secar en plano.',
+    image: 'https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?auto=format&fit=crop&w=800&q=80',
+    colors: ['#A05D3D', '#2B2725'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 12,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 58,
+    sku: 'DAL-OXF-58',
+    name: 'Camisa Oversize Algodón Oxford',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 89.0,
+    originalPrice: 89.0,
+    discount: 0,
+    material: '100% Algodón Oxford Egipcio Suave',
+    fit: 'Silueta Extra Amplia Contemporánea',
+    care: 'Planchar con vapor medio.',
+    image: 'https://images.unsplash.com/photo-1475178626620-a4d074967452?auto=format&fit=crop&w=800&q=80',
+    colors: ['#F7F7F8', '#667C8D'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    stock: 26,
+    active: true,
+    isNew: false
+  },
+  {
+    id: 59,
+    sku: 'DAL-DRP-59',
+    name: 'Camiseta Pesada Manga Caída Blanca',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 48.0,
+    originalPrice: 48.0,
+    discount: 0,
+    material: '100% Algodón Pima Peinado 280g',
+    fit: 'Hombro Caído y Cuello Grueso Sellado',
+    care: 'Lavar con ropa blanca a 30°C.',
+    image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80',
+    colors: ['#FFFFFF', '#D1CCC2'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    stock: 32,
+    active: true,
+    isNew: true
+  },
+  {
+    id: 60,
+    sku: 'DAL-SET-60',
+    name: 'Conjunto Dos Piezas Lino Minimal',
+    type: 'lino',
+    typeName: 'Lino Orgánico',
+    price: 185.0,
+    originalPrice: 220.0,
+    discount: 16,
+    material: '100% Lino Europeo Lavado con Piedra Pómez',
+    fit: 'Top Sin Mangas y Pantalón Recto a Juego',
+    care: 'Lavar en frío ciclo delicado.',
+    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=800&q=80',
+    colors: ['#EBE6DC', '#3A3835'],
+    sizes: ['XS', 'S', 'M', 'L'],
+    stock: 14,
+    active: true,
+    isNew: true
   }
 ];
 
@@ -218,6 +1206,41 @@ const CLOTHING_TYPES = [
   { id: 'capas', label: 'Capas & Outerwear', desc: 'Gabardinas y prendas ligeras para exteriores.' },
   { id: 'calzado', label: 'Calzado & Cuero', desc: 'Piel con curtido vegetal y suelas flexibles.' }
 ];
+
+// Campañas Promocionales de Otoño (Visible antes de iniciar sesión)
+const AUTUMN_PROMOS = [
+  {
+    id: 'autumn-1',
+    title: 'Esencia de Otoño: Capas & Trench',
+    subtitle: 'Siluetas envolventes en tonos tierra y lana pura para el cambio de clima.',
+    tag: '🍁 NUEVA TEMPORADA',
+    category: 'capas',
+    categoryTitle: 'Capas & Outerwear',
+    btnText: 'Explorar Capas',
+    image: 'https://images.unsplash.com/photo-1511280394622-399bb40a74e9?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 'autumn-2',
+    title: 'Sastrería Cálida & Lino Pesado',
+    subtitle: 'Blazers desestructurados y pantalones fluidos en tonos arena y arcilla.',
+    tag: '🍂 HASTA 20% OFF',
+    category: 'sastreria',
+    categoryTitle: 'Sastrería Fluida',
+    btnText: 'Ver Sastrería',
+    image: 'https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?auto=format&fit=crop&w=1200&q=80'
+  },
+  {
+    id: 'autumn-3',
+    title: 'Punto Suave & Cuero Artesanal',
+    subtitle: 'Jerséis en Baby Alpaca, chalecos y botas de piel con curtido vegetal.',
+    tag: '✨ EDICIÓN LIMITADA',
+    category: 'punto',
+    categoryTitle: 'Punto Suave',
+    btnText: 'Ver Punto & Cuero',
+    image: 'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?auto=format&fit=crop&w=1200&q=80'
+  }
+];
+
 
 // Usuarios precargados de demostración (Cliente vs Administrador)
 const INITIAL_USERS = [
@@ -499,8 +1522,19 @@ export default function App() {
     );
   };
 
-  // Alternar Lista de Deseos (Favoritos)
+  // Alternar Lista de Deseos (Favoritos) - Requiere Iniciar Sesión
   const toggleWishlist = (id) => {
+    if (!currentUser) {
+      Alert.alert(
+        'Iniciar Sesión Requerido',
+        'Para guardar prendas en tu lista de deseos, por favor inicia sesión o crea tu cuenta.',
+        [
+          { text: 'Seguir explorando', style: 'cancel' },
+          { text: 'Iniciar Sesión', onPress: () => setActiveTab('account') }
+        ]
+      );
+      return;
+    }
     setWishlist((prev) => {
       const exists = prev.includes(id);
       if (exists) {
@@ -512,8 +1546,25 @@ export default function App() {
     });
   };
 
-  // Confirmar Pedido en Checkout
+  // Confirmar Pedido en Checkout (Requiere Iniciar Sesión)
   const handleConfirmOrder = () => {
+    if (!currentUser) {
+      Alert.alert(
+        'Iniciar Sesión Requerido',
+        'Para pagar y confirmar tu orden debes iniciar sesión.',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          {
+            text: 'Iniciar Sesión',
+            onPress: () => {
+              setIsCheckoutOpen(false);
+              setActiveTab('account');
+            }
+          }
+        ]
+      );
+      return;
+    }
     if (!checkoutName.trim() || !checkoutAddress.trim()) {
       Alert.alert('Datos requeridos', 'Por favor ingresa tu nombre y dirección de entrega.');
       return;
@@ -733,6 +1784,12 @@ export default function App() {
     setNewProdStock('20');
     setNewProdImage('');
     triggerPush('Prenda Publicada', `${newProduct.name} agregada al catálogo de Dal.`);
+  };
+
+  // Reorganizar prendas al azar
+  const handleShuffleProducts = () => {
+    setProducts((prev) => [...prev].sort(() => Math.random() - 0.5));
+    triggerPush('Prendas al Azar', 'El catálogo se ha reorganizado aleatoriamente.');
   };
 
   // Admin: Emitir Push masivo
@@ -1314,6 +2371,52 @@ export default function App() {
                 )}
               </View>
 
+              {/* SECCIÓN PROMOCIONAL DE OTOÑO (Exclusiva antes de iniciar sesión) */}
+              {!currentUser && (
+                <View style={styles.autumnPromoContainer}>
+                  <View style={styles.autumnHeaderRow}>
+                    <View style={styles.autumnBadge}>
+                      <Sparkles size={11} color="#B56B47" />
+                      <Text style={styles.autumnBadgeText}>CAMPAÑA OTOÑO 2026</Text>
+                    </View>
+                    <Text style={styles.autumnSeasonalLabel}>Edición Especial</Text>
+                  </View>
+
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.autumnScrollContent}
+                  >
+                    {AUTUMN_PROMOS.map((promo) => (
+                      <TouchableOpacity
+                        key={promo.id}
+                        style={styles.autumnPromoCard}
+                        activeOpacity={0.92}
+                        onPress={() => {
+                          if (promo.category) {
+                            setSelectedType(promo.category);
+                            triggerPush('Campaña Otoño', `Filtrando por ${promo.categoryTitle}.`);
+                          }
+                        }}
+                      >
+                        <Image source={{ uri: promo.image }} style={styles.autumnPromoImg} />
+                        <View style={styles.autumnCardGradient}>
+                          <View style={styles.autumnOfferTag}>
+                            <Text style={styles.autumnOfferTagText}>{promo.tag}</Text>
+                          </View>
+                          <Text style={styles.autumnCardTitle}>{promo.title}</Text>
+                          <Text style={styles.autumnCardSubtitle}>{promo.subtitle}</Text>
+                          <View style={styles.autumnActionRow}>
+                            <Text style={styles.autumnActionText}>{promo.btnText}</Text>
+                            <ArrowRight size={13} color="#FFFFFF" />
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+
               {/* Selector Horizontal de Familias Textiles */}
               <View style={styles.typesScrollWrapper}>
                 <ScrollView
@@ -1336,6 +2439,21 @@ export default function App() {
                     );
                   })}
                 </ScrollView>
+              </View>
+
+              {/* Barra de Conteo y Botón Mezclar al Azar */}
+              <View style={styles.catalogActionBar}>
+                <Text style={styles.catalogItemsCount}>
+                  {filteredProducts.length} prendas exclusivas
+                </Text>
+                <TouchableOpacity
+                  style={styles.shuffleBtn}
+                  onPress={handleShuffleProducts}
+                  activeOpacity={0.7}
+                >
+                  <Sparkles size={13} color="#536B58" />
+                  <Text style={styles.shuffleBtnText}>Mezclar al azar</Text>
+                </TouchableOpacity>
               </View>
 
               {/* Grilla Móvil de 2 Columnas de Prendas */}
@@ -1466,7 +2584,21 @@ export default function App() {
                 <Text style={styles.sectionSubtitle}>Prendas guardadas para comprar más tarde.</Text>
               </View>
 
-              {wishlist.length === 0 ? (
+              {!currentUser ? (
+                <View style={styles.emptyStateBox}>
+                  <Lock size={44} color="#B56B47" />
+                  <Text style={styles.emptyStateTitle}>Inicia sesión para guardar prendas</Text>
+                  <Text style={styles.emptyStateSubtitle}>
+                    Crea tu lista de deseos personalizada y guarda tus siluetas favoritas para cuando decidas comprar.
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.primaryActionBtn}
+                    onPress={() => setActiveTab('account')}
+                  >
+                    <Text style={styles.primaryActionBtnText}>Iniciar Sesión / Crear Cuenta</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : wishlist.length === 0 ? (
                 <View style={styles.emptyStateBox}>
                   <Heart size={44} color="#C4BFB5" />
                   <Text style={styles.emptyStateTitle}>No tienes prendas en favoritos</Text>
@@ -1639,9 +2771,42 @@ export default function App() {
                       <Text style={styles.totalVal}>${total.toFixed(2)} USD</Text>
                     </View>
 
+                    {!currentUser && (
+                      <View style={styles.loginRequiredBanner}>
+                        <View style={styles.loginRequiredIconBox}>
+                          <Lock size={16} color="#B56B47" />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.loginRequiredTitle}>Inicio de Sesión Requerido para Pagar</Text>
+                          <Text style={styles.loginRequiredDesc}>
+                            Para garantizar la seguridad de tu orden, debes iniciar sesión antes de pagar.
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.loginRequiredBtn}
+                          onPress={() => setActiveTab('account')}
+                        >
+                          <Text style={styles.loginRequiredBtnText}>Ingresar</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+
                     <TouchableOpacity
                       style={styles.checkoutBtn}
-                      onPress={() => setIsCheckoutOpen(true)}
+                      onPress={() => {
+                        if (!currentUser) {
+                          Alert.alert(
+                            'Iniciar Sesión Requerido',
+                            'Para proceder al pago y procesar tu pedido necesitas iniciar sesión con tu cuenta.',
+                            [
+                              { text: 'Cancelar', style: 'cancel' },
+                              { text: 'Iniciar Sesión', onPress: () => setActiveTab('account') }
+                            ]
+                          );
+                          return;
+                        }
+                        setIsCheckoutOpen(true);
+                      }}
                     >
                       <Text style={styles.checkoutBtnText}>Proceder al Pago</Text>
                       <ArrowRight size={18} color="#FFFFFF" />
@@ -2039,6 +3204,21 @@ export default function App() {
                         {selectedProduct.stock > 0 ? 'Añadir a la Bolsa' : 'Agotado Temporalmente'}
                       </Text>
                     </TouchableOpacity>
+
+                    {/* Botón Guardar en Favoritos (Requiere Iniciar Sesión) */}
+                    <TouchableOpacity
+                      style={styles.modalSaveWishlistBtn}
+                      onPress={() => toggleWishlist(selectedProduct.id)}
+                    >
+                      <Heart
+                        size={16}
+                        color={wishlist.includes(selectedProduct.id) ? '#B56B47' : '#1A1918'}
+                        fill={wishlist.includes(selectedProduct.id) ? '#B56B47' : 'none'}
+                      />
+                      <Text style={styles.modalSaveWishlistText}>
+                        {wishlist.includes(selectedProduct.id) ? 'Guardado en Favoritos' : 'Guardar en Favoritos'}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </ScrollView>
               </>
@@ -2068,23 +3248,15 @@ export default function App() {
                 Despacho artesanal express con empaque reciclable.
               </Text>
 
-              {!currentUser && (
-                <View style={styles.checkoutGuestNotice}>
-                  <Text style={styles.checkoutGuestNoticeText}>
-                    Comprando en modo invitado.{' '}
-                    <Text
-                      style={{ color: '#B56B47', fontWeight: '700' }}
-                      onPress={() => {
-                        setIsCheckoutOpen(false);
-                        setActiveTab('account');
-                      }}
-                    >
-                      Inicia sesión
-                    </Text>{' '}
-                    para guardar tus datos y compras.
+              <View style={styles.checkoutAuthNotice}>
+                <ShieldCheck size={16} color="#536B58" />
+                <Text style={styles.checkoutAuthNoticeText}>
+                  Comprando con la cuenta de{' '}
+                  <Text style={{ fontWeight: '700', color: '#1A1918' }}>
+                    {currentUser?.name || currentUser?.email || 'Usuario Dal'}
                   </Text>
-                </View>
-              )}
+                </Text>
+              </View>
 
               <Text style={styles.inputLabel}>Nombre del Destinatario</Text>
               <TextInput
@@ -3323,6 +4495,197 @@ const styles = StyleSheet.create({
   },
 
   // Grilla de Productos
+    // Sección Promocional de Otoño (Antes de Iniciar Sesión)
+  autumnPromoContainer: {
+    marginVertical: 10
+  },
+  autumnHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    marginBottom: 8
+  },
+  autumnBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: '#FDF5E6',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#F3E5C8'
+  },
+  autumnBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#B56B47',
+    letterSpacing: 0.5
+  },
+  autumnSeasonalLabel: {
+    fontSize: 11,
+    color: '#8A867E',
+    fontWeight: '600'
+  },
+  autumnScrollContent: {
+    paddingHorizontal: 16,
+    gap: 12
+  },
+  autumnPromoCard: {
+    width: CARD_WIDTH * 1.68,
+    height: 195,
+    borderRadius: 16,
+    overflow: 'hidden',
+    backgroundColor: '#1A1918',
+    position: 'relative',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4
+  },
+  autumnPromoImg: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    opacity: 0.8
+  },
+  autumnCardGradient: {
+    flex: 1,
+    backgroundColor: 'rgba(26, 25, 24, 0.48)',
+    padding: 14,
+    justifyContent: 'flex-end'
+  },
+  autumnOfferTag: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#B56B47',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 6,
+    marginBottom: 6
+  },
+  autumnOfferTagText: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.5
+  },
+  autumnCardTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    marginBottom: 3
+  },
+  autumnCardSubtitle: {
+    fontSize: 11,
+    color: '#F4F2EB',
+    lineHeight: 15,
+    marginBottom: 8
+  },
+  autumnActionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6
+  },
+  autumnActionText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#FFFFFF'
+  },
+
+  // Banner Requerir Inicio de Sesión en Carrito
+  loginRequiredBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FDF7F4',
+    borderWidth: 1,
+    borderColor: '#F3E4DC',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    gap: 10
+  },
+  loginRequiredIconBox: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#F3E4DC'
+  },
+  loginRequiredTitle: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#1A1918'
+  },
+  loginRequiredDesc: {
+    fontSize: 10,
+    color: '#6E6A63',
+    marginTop: 2
+  },
+  loginRequiredBtn: {
+    backgroundColor: '#1A1918',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8
+  },
+  loginRequiredBtnText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700'
+  },
+
+  // Checkout Autenticado Notice
+  checkoutAuthNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#E7EEE8',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#CFDEC4'
+  },
+  checkoutAuthNoticeText: {
+    fontSize: 12,
+    color: '#263629'
+  },
+
+  catalogActionBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    marginBottom: 4
+  },
+  catalogItemsCount: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#8A867E'
+  },
+  shuffleBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: '#E7EEE8',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#D4E2D6'
+  },
+  shuffleBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#263629'
+  },
   productList: {
     paddingHorizontal: 12,
     paddingBottom: 95
@@ -4247,6 +5610,23 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '700'
+  },
+  modalSaveWishlistBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E8E4DA',
+    paddingVertical: 12,
+    borderRadius: 24,
+    marginTop: 10
+  },
+  modalSaveWishlistText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#1A1918'
   },
 
   // Checkout Modal
