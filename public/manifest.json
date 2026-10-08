@@ -1,0 +1,17 @@
+{
+  "name": "Dal - Ropa & Atelier Contemporáneo",
+  "short_name": "Dal",
+  "description": "Tienda de ropa elegante y fresca con sensores interactivos y notificaciones push.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#1C1B1A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "appropa",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "server": "node server/index.js",
+    "dev": "expo start"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^57.0.14",
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "^57.0.16",
+    "canvas-confetti": "^1.9.4",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.6",
+    "expo": "^57.0.27",
+    "expo-device": "~57.0.2",
+    "expo-notifications": "~57.0.22",
+    "expo-status-bar": "^57.0.1",
+    "express": "^5.2.1",
+    "lucide": "^1.52.0",
+    "lucide-react-native": "^1.52.0",
+    "mysql2": "^3.24.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-native": "^0.76.7",
+    "react-native-svg": "^15.15.5",
+    "react-native-web": "^0.21.3"
+  }
+}

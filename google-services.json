@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "708532617962",
+    "project_id": "appropa-243a5",
+    "storage_bucket": "appropa-243a5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708532617962:android:ea4345dd546758f2ed8d93",
+        "android_client_info": {
+          "package_name": "com.dal.appropa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg5QMAyBdFEyo5Gqp-aDYyGdj1_iW_ZgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
