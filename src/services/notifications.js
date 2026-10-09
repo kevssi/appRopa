@@ -22,59 +22,60 @@ export async function registerForPushNotificationsAsync() {
   if (Platform.OS === 'web') {
     return null;
   }
-  let token = null;
-
-  // En Android 8.0+ (Oreo en adelante), los canales de notificación son OBLIGATORIOS
-  // para que suenen y aparezcan con prioridad alta (Heads-up banner)
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('dal-orders', {
-      name: 'Pedidos y Envíos Dal',
-      description: 'Alertas de estado de compras, envíos en camino y confirmaciones.',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#B56B47',
-      enableVibrate: true,
-      showBadge: true,
-    });
-  }
-
-  // Las notificaciones push solo funcionan en dispositivos físicos reales
-  if (!Device.isDevice) {
-    console.warn('[Push] Debes usar un dispositivo físico real para recibir notificaciones push de FCM.');
-    return null;
-  }
-
-  // 3. Comprobar permisos existentes o solicitarlos (Android 13+ solicitará POST_NOTIFICATIONS)
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-
-  if (existingStatus !== 'granted') {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
-
-  if (finalStatus !== 'granted') {
-    console.warn('[Push] El usuario no concedió permisos de notificación.');
-    return null;
-  }
-
   try {
-    // 4. Intentar obtener el Token nativo de Firebase Cloud Messaging (FCM)
-    const deviceTokenResponse = await Notifications.getDevicePushTokenAsync();
-    token = deviceTokenResponse.data;
-    console.log('[Push] Token FCM nativo obtenido:', token);
-  } catch (error) {
-    console.warn('[Push] Aviso: Modo Expo Go detectado. Obteniendo token alternativo...');
-    try {
-      const expoToken = await Notifications.getExpoPushTokenAsync();
-      token = expoToken.data;
-      console.log('[Push] Token obtenido exitosamente:', token);
-    } catch (e2) {
-      console.error('[Push] Error al obtener token:', e2.message);
-    }
-  }
+    let token = null;
 
-  return token;
+    // En Android 8.0+ (Oreo en adelante), los canales de notificación son OBLIGATORIOS
+    if (Platform.OS === 'android') {
+      try {
+        await Notifications.setNotificationChannelAsync('dal-orders', {
+          name: 'Pedidos y Envíos Dal',
+          description: 'Alertas de estado de compras, envíos en camino y confirmaciones.',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#B56B47',
+          enableVibrate: true,
+          showBadge: true,
+        });
+      } catch (e) {}
+    }
+
+    if (!Device.isDevice) {
+      return null;
+    }
+
+    try {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== 'granted') {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+
+    try {
+      const deviceTokenResponse = await Notifications.getDevicePushTokenAsync();
+      token = deviceTokenResponse?.data || null;
+    } catch (error) {
+      try {
+        const expoToken = await Notifications.getExpoPushTokenAsync();
+        token = expoToken?.data || null;
+      } catch (e2) {
+        // En Expo Go iOS, las notificaciones remotas no están disponibles
+      }
+    }
+
+    return token;
+  } catch (err) {
+    return null;
+  }
 }
 
 /**
