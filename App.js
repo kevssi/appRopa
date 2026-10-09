@@ -1505,9 +1505,83 @@ export default function App() {
   const [fcmToken, setFcmToken] = useState(null);
   const [selectedOrderForDetail, setSelectedOrderForDetail] = useState(null);
 
-  // Escuchadores de Notificaciones Push (Primer plano, Segundo plano y App cerrada)
-  useEffect(() => {
-    // Inicialización y escucha de los 3 Sensores de Hardware
+  // Función para enviar telemetría de sensor a backend
+  const logSensorEvent = (sensorType, payload) => {
+    fetch('http://localhost:4000/api/sensors/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sensorType,
+        eventPayload: payload,
+        deviceInfo: Platform.OS === 'web' ? 'Navegador Web' : `Dispositivo Móvil ${Platform.OS}`
+      })
+    }).catch(() => {});
+  };
+
+  // Función al detectar sacudida física (Sensor 1: Acelerómetro)
+  const handleShakeAction = () => {
+    setLastShakeTimestamp(new Date().toLocaleTimeString());
+    // 1. Reorganizar catálogo al azar
+    setProducts((prev) => [...prev].sort(() => Math.random() - 0.5));
+    // 2. Aplicar cupón de sacudida
+    setAppliedPromo({ code: 'SHAKE20', percent: 20 });
+    // 3. Notificación push flotante
+    triggerPush(
+      '📳 ¡Sacudida Detectada!',
+      'Catálogo reorganizado al azar y cupón del 20% (SHAKE20) aplicado a tu bolsa.'
+    );
+    // 4. Log de telemetría al servidor
+    logSensorEvent('device_shake', { action: 'shake_shuffle_and_promo', gForce: 2.1 });
+  };
+
+  // Función para actualizar ubicación GPS (Sensor 3: Geolocalización)
+  const updateGpsLocation = async () => {
+    try {
+      setIsLocating(true);
+      let coords = { latitude: 19.4194, longitude: -99.1622 }; // Roma Norte default
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+          const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          if (loc && loc.coords) {
+            coords = {
+              latitude: loc.coords.latitude,
+              longitude: loc.coords.longitude
+            };
+          }
+          setSensorsActive((prev) => ({ ...prev, location: true }));
+        }
+      } catch (e) {
+        console.log('Permiso GPS omitido, usando fallback:', e);
+      }
+
+      setUserCoords(coords);
+
+      // Calcular boutique más cercana
+      let closest = null;
+      let minDistance = 999999;
+      DAL_BOUTIQUES.forEach((b) => {
+        const dist = calculateDistanceKm(coords.latitude, coords.longitude, b.latitude, b.longitude);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closest = { ...b, distanceKm: dist };
+        }
+      });
+
+      setNearestBoutique(closest);
+      logSensorEvent('geolocation_radar', {
+        userCoords: coords,
+        nearestBoutique: closest?.name,
+        distanceKm: closest?.distanceKm
+      });
+    } catch (err) {
+      console.log('Error calculando GPS:', err);
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
+  // Inicialización y escucha de los 3 Sensores de Hardware (Acelerómetro, Giroscopio, GPS)
   useEffect(() => {
     let accelSubscription = null;
     let gyroSubscription = null;
@@ -1567,82 +1641,8 @@ export default function App() {
     };
   }, []);
 
-  // Función al detectar sacudida física (Sensor 1)
-  const handleShakeAction = () => {
-    setLastShakeTimestamp(new Date().toLocaleTimeString());
-    // 1. Reorganizar catálogo al azar
-    setProducts((prev) => [...prev].sort(() => Math.random() - 0.5));
-    // 2. Aplicar cupón de sacudida
-    setAppliedPromo({ code: 'SHAKE20', percent: 20 });
-    // 3. Notificación push flotante
-    triggerPush(
-      '📳 ¡Sacudida Detectada!',
-      'Catálogo reorganizado al azar y cupón del 20% (SHAKE20) aplicado a tu bolsa.'
-    );
-    // 4. Log de telemetría al servidor
-    logSensorEvent('device_shake', { action: 'shake_shuffle_and_promo', gForce: 2.1 });
-  };
-
-  // Función para actualizar ubicación GPS (Sensor 3)
-  const updateGpsLocation = async () => {
-    try {
-      setIsLocating(true);
-      let coords = { latitude: 19.4194, longitude: -99.1622 }; // Roma Norte default
-      try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status === 'granted') {
-          const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-          if (loc && loc.coords) {
-            coords = {
-              latitude: loc.coords.latitude,
-              longitude: loc.coords.longitude
-            };
-          }
-          setSensorsActive((prev) => ({ ...prev, location: true }));
-        }
-      } catch (e) {
-        console.log('Permiso GPS omitido, usando fallback:', e);
-      }
-
-      setUserCoords(coords);
-
-      // Calcular boutique más cercana
-      let closest = null;
-      let minDistance = 999999;
-      DAL_BOUTIQUES.forEach((b) => {
-        const dist = calculateDistanceKm(coords.latitude, coords.longitude, b.latitude, b.longitude);
-        if (dist < minDistance) {
-          minDistance = dist;
-          closest = { ...b, distanceKm: dist };
-        }
-      });
-
-      setNearestBoutique(closest);
-      logSensorEvent('geolocation_radar', {
-        userCoords: coords,
-        nearestBoutique: closest?.name,
-        distanceKm: closest?.distanceKm
-      });
-    } catch (err) {
-      console.log('Error calculando GPS:', err);
-    } finally {
-      setIsLocating(false);
-    }
-  };
-
-  // Enviar telemetría de sensor a backend
-  const logSensorEvent = (sensorType, payload) => {
-    fetch('http://localhost:4000/api/sensors/log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sensorType,
-        eventPayload: payload,
-        deviceInfo: Platform.OS === 'web' ? 'Navegador Web' : `Dispositivo Móvil ${Platform.OS}`
-      })
-    }).catch(() => {});
-  };
-
+  // Escuchadores de Notificaciones Push (Primer plano, Segundo plano y App cerrada)
+  useEffect(() => {
     // 1. Solicitar permisos y obtener Token FCM
     registerForPushNotificationsAsync().then((token) => {
       if (token) {
