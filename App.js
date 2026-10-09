@@ -25,6 +25,10 @@ import {
   X,
   Layers,
   Sparkles,
+  Compass,
+  Navigation,
+  Radio,
+  Zap,
   User,
   Bell,
   ArrowRight,
@@ -47,6 +51,8 @@ import {
   EyeOff
 } from 'lucide-react-native';
 import * as Notifications from 'expo-notifications';
+import { Accelerometer, Gyroscope } from 'expo-sensors';
+import * as Location from 'expo-location';
 import { registerForPushNotificationsAsync, sendTokenToBackend } from './src/services/notifications';
 
 const { width } = Dimensions.get('window');
@@ -1313,9 +1319,92 @@ const INITIAL_ORDERS = [
   }
 ];
 
+
+// Boutiques Dal Oficiales para Radar de Geolocalización (Sensor 3)
+const DAL_BOUTIQUES = [
+  {
+    id: 1,
+    name: 'Dal Flagship Roma Norte',
+    city: 'Ciudad de México',
+    address: 'Colima 184, Roma Norte, Cuauhtémoc',
+    latitude: 19.4194,
+    longitude: -99.1622,
+    phone: '+52 55 4123 9081',
+    schedule: 'Lun - Dom: 10:00 - 20:00',
+    hasExpressPickup: true
+  },
+  {
+    id: 2,
+    name: 'Dal Atelier Polanco',
+    city: 'Ciudad de México',
+    address: 'Campos Elíseos 204, Polanco, Miguel Hidalgo',
+    latitude: 19.4298,
+    longitude: -99.1915,
+    phone: '+52 55 8920 1144',
+    schedule: 'Lun - Sáb: 11:00 - 20:30',
+    hasExpressPickup: true
+  },
+  {
+    id: 3,
+    name: 'Dal Estudio Salamanca',
+    city: 'Madrid',
+    address: 'Calle de Claudio Coello 34, Salamanca',
+    latitude: 40.4262,
+    longitude: -3.6865,
+    phone: '+34 91 582 9910',
+    schedule: 'Lun - Sáb: 10:30 - 20:30',
+    hasExpressPickup: true
+  },
+  {
+    id: 4,
+    name: 'Dal Espacio SoHo',
+    city: 'New York',
+    address: '432 Broome St, SoHo, NY 10013',
+    latitude: 40.7208,
+    longitude: -73.9998,
+    phone: '+1 212 940 3388',
+    schedule: 'Lun - Dom: 11:00 - 19:30',
+    hasExpressPickup: true
+  }
+];
+
+function calculateDistanceKm(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radio de la Tierra en km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
 export default function App() {
   // Navegación de pestañas para Cliente:
   // 'catalog', 'collections', 'wishlist', 'cart', 'account'
+  // ==========================================
+  // HARDWARE SENSORS STATE (3 SENSORES INTEGRADOS)
+  // 1. Acelerómetro (Detección de Sacudida - Shake)
+  // 2. Giroscopio (Efecto Parallax 3D e Inclinación)
+  // 3. Geolocalización / GPS (Radar de Boutiques Dal)
+  // ==========================================
+  const [isSensorModalOpen, setIsSensorModalOpen] = useState(false);
+  const [accelG, setAccelG] = useState(1.0);
+  const [lastShakeTimestamp, setLastShakeTimestamp] = useState(null);
+  const [gyroData, setGyroData] = useState({ x: 0, y: 0, z: 0 });
+  const [parallax3dEnabled, setParallax3dEnabled] = useState(true);
+  const [userCoords, setUserCoords] = useState({ latitude: 19.4194, longitude: -99.1622 });
+  const [nearestBoutique, setNearestBoutique] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
+  const [sensorsActive, setSensorsActive] = useState({
+    accelerometer: false,
+    gyroscope: false,
+    location: false
+  });
+
   const [activeTab, setActiveTab] = useState('catalog');
 
   // Modo Admin (cuando está logueado un admin):
@@ -1410,6 +1499,142 @@ export default function App() {
 
   // Escuchadores de Notificaciones Push (Primer plano, Segundo plano y App cerrada)
   useEffect(() => {
+    // Inicialización y escucha de los 3 Sensores de Hardware
+  useEffect(() => {
+    let accelSubscription = null;
+    let gyroSubscription = null;
+    let isMounted = true;
+    let lastShakeTime = 0;
+
+    // SENSOR 1: Acelerómetro (Detección de Sacudida del dispositivo)
+    const startAccelerometer = async () => {
+      try {
+        const available = await Accelerometer.isAvailableAsync();
+        if (available && isMounted) {
+          Accelerometer.setUpdateInterval(150);
+          accelSubscription = Accelerometer.addListener(({ x, y, z }) => {
+            const currentG = Math.sqrt(x * x + y * y + z * z);
+            setAccelG(currentG);
+
+            // Umbral de sacudida (Shake Trigger)
+            const now = Date.now();
+            if (currentG > 1.85 && now - lastShakeTime > 2500) {
+              lastShakeTime = now;
+              handleShakeAction();
+            }
+          });
+          setSensorsActive((prev) => ({ ...prev, accelerometer: true }));
+        }
+      } catch (err) {
+        console.log('Acelerómetro no disponible:', err);
+      }
+    };
+
+    // SENSOR 2: Giroscopio (Inclinación 3D de Telas)
+    const startGyroscope = async () => {
+      try {
+        const available = await Gyroscope.isAvailableAsync();
+        if (available && isMounted) {
+          Gyroscope.setUpdateInterval(100);
+          gyroSubscription = Gyroscope.addListener((data) => {
+            setGyroData(data);
+          });
+          setSensorsActive((prev) => ({ ...prev, gyroscope: true }));
+        }
+      } catch (err) {
+        console.log('Giroscopio no disponible:', err);
+      }
+    };
+
+    // SENSOR 3: GPS / Geolocalización (Radar de Boutiques Dal)
+    updateGpsLocation();
+
+    startAccelerometer();
+    startGyroscope();
+
+    return () => {
+      isMounted = false;
+      if (accelSubscription) accelSubscription.remove();
+      if (gyroSubscription) gyroSubscription.remove();
+    };
+  }, []);
+
+  // Función al detectar sacudida física (Sensor 1)
+  const handleShakeAction = () => {
+    setLastShakeTimestamp(new Date().toLocaleTimeString());
+    // 1. Reorganizar catálogo al azar
+    setProducts((prev) => [...prev].sort(() => Math.random() - 0.5));
+    // 2. Aplicar cupón de sacudida
+    setAppliedPromo({ code: 'SHAKE20', percent: 20 });
+    // 3. Notificación push flotante
+    triggerPush(
+      '📳 ¡Sacudida Detectada!',
+      'Catálogo reorganizado al azar y cupón del 20% (SHAKE20) aplicado a tu bolsa.'
+    );
+    // 4. Log de telemetría al servidor
+    logSensorEvent('device_shake', { action: 'shake_shuffle_and_promo', gForce: 2.1 });
+  };
+
+  // Función para actualizar ubicación GPS (Sensor 3)
+  const updateGpsLocation = async () => {
+    try {
+      setIsLocating(true);
+      let coords = { latitude: 19.4194, longitude: -99.1622 }; // Roma Norte default
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+          const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          if (loc && loc.coords) {
+            coords = {
+              latitude: loc.coords.latitude,
+              longitude: loc.coords.longitude
+            };
+          }
+          setSensorsActive((prev) => ({ ...prev, location: true }));
+        }
+      } catch (e) {
+        console.log('Permiso GPS omitido, usando fallback:', e);
+      }
+
+      setUserCoords(coords);
+
+      // Calcular boutique más cercana
+      let closest = null;
+      let minDistance = 999999;
+      DAL_BOUTIQUES.forEach((b) => {
+        const dist = calculateDistanceKm(coords.latitude, coords.longitude, b.latitude, b.longitude);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closest = { ...b, distanceKm: dist };
+        }
+      });
+
+      setNearestBoutique(closest);
+      logSensorEvent('geolocation_radar', {
+        userCoords: coords,
+        nearestBoutique: closest?.name,
+        distanceKm: closest?.distanceKm
+      });
+    } catch (err) {
+      console.log('Error calculando GPS:', err);
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
+  // Enviar telemetría de sensor a backend
+  const logSensorEvent = (sensorType, payload) => {
+    fetch('http://localhost:4000/api/sensors/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sensorType,
+        eventPayload: payload,
+        deviceInfo: Platform.OS === 'web' ? 'Navegador Web' : `Dispositivo Móvil ${Platform.OS}`
+      })
+    }).catch(() => {});
+  };
+
     // 1. Solicitar permisos y obtener Token FCM
     registerForPushNotificationsAsync().then((token) => {
       if (token) {
@@ -1925,6 +2150,16 @@ export default function App() {
               </TouchableOpacity>
             )}
 
+                        {/* Botón Acceso Rápido a Sensores */}
+            <TouchableOpacity
+              style={styles.headerSensorBtn}
+              onPress={() => setIsSensorModalOpen(true)}
+              hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+            >
+              <Compass size={17} color="#536B58" />
+              <View style={styles.sensorActiveDot} />
+            </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.headerBtn}
               onPress={() => setIsNotifModalOpen(true)}
@@ -2354,6 +2589,27 @@ export default function App() {
           {/* PESTAÑA 1: CATÁLOGO */}
           {activeTab === 'catalog' && (
             <View style={styles.flex1}>
+                            {/* BARRA DE SENSORES Y RADAR BOUTIQUE DAL */}
+              <TouchableOpacity
+                style={styles.sensorQuickBar}
+                onPress={() => setIsSensorModalOpen(true)}
+                activeOpacity={0.88}
+              >
+                <View style={styles.sensorQuickBarLeft}>
+                  <View style={styles.sensorPulseDot} />
+                  <Radio size={13} color="#536B58" />
+                  <Text style={styles.sensorQuickBarText} numberOfLines={1}>
+                    {nearestBoutique
+                      ? `Radar GPS: ${nearestBoutique.name} (${nearestBoutique.distanceKm < 1 ? Math.round(nearestBoutique.distanceKm * 1000) + 'm' : nearestBoutique.distanceKm.toFixed(1) + 'km'})`
+                      : '3 Sensores Activos: Sacudida, Giroscopio 3D, GPS'}
+                  </Text>
+                </View>
+                <View style={styles.sensorQuickBarBadge}>
+                  <Text style={styles.sensorQuickBarBadgeText}>Ver Sensores</Text>
+                  <ArrowRight size={11} color="#536B58" />
+                </View>
+              </TouchableOpacity>
+
               {/* Barra de Búsqueda Móvil */}
               <View style={styles.searchContainer}>
                 <Search size={18} color="#8A867E" style={styles.searchIcon} />
@@ -3128,7 +3384,28 @@ export default function App() {
                 </TouchableOpacity>
 
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  <Image source={{ uri: selectedProduct.image }} style={styles.modalProductImg} />
+                  <View
+                    style={[
+                      styles.modalImageContainer,
+                      parallax3dEnabled && {
+                        transform: [
+                          { perspective: 900 },
+                          { rotateY: `${Math.max(-12, Math.min(12, gyroData.y * 14))}deg` },
+                          { rotateX: `${Math.max(-12, Math.min(12, -gyroData.x * 14))}deg` }
+                        ]
+                      }
+                    ]}
+                  >
+                    <Image source={{ uri: selectedProduct.image }} style={styles.modalProductImg} />
+                    {parallax3dEnabled && (
+                      <View style={styles.gyroBadge}>
+                        <Compass size={11} color="#FFFFFF" />
+                        <Text style={styles.gyroBadgeText}>
+                          Giroscopio 3D Activo ({gyroData.y.toFixed(1)}°)
+                        </Text>
+                      </View>
+                    )}
+                  </View>
 
                   <View style={styles.modalContent}>
                     <Text style={styles.modalCategory}>{selectedProduct.typeName}</Text>
@@ -3575,11 +3852,533 @@ export default function App() {
           </View>
         </View>
       </Modal>
+          {/* ============================================================== */}
+      {/* MODAL 4: TECNOLOGÍA SENSORIAL DAL ATELIER (3 SENSORES HARDWARE) */}
+      {/* ============================================================== */}
+      <Modal
+        visible={isSensorModalOpen}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsSensorModalOpen(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalSheet}>
+            <TouchableOpacity style={styles.modalCloseBtn} onPress={() => setIsSensorModalOpen(false)}>
+              <X size={20} color="#1A1918" />
+            </TouchableOpacity>
+
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.modalContent}>
+              <View style={styles.sensorModalHeaderBadge}>
+                <Radio size={14} color="#536B58" />
+                <Text style={styles.sensorModalHeaderBadgeText}>TECNOLOGÍA SENSORIAL INTEGRADA</Text>
+              </View>
+
+              <Text style={styles.modalTitle}>3 Sensores de Hardware</Text>
+              <Text style={styles.sectionSubtitle}>
+                Sensores móviles activos vinculados en tiempo real con Dal Atelier.
+              </Text>
+
+              {/* SENSOR 1: ACELERÓMETRO (DETECCIÓN DE SACUDIDA) */}
+              <View style={styles.sensorCard}>
+                <View style={styles.sensorCardHeader}>
+                  <View style={styles.sensorIconContainer}>
+                    <Zap size={18} color="#B56B47" />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.sensorCardTitle}>1. Acelerómetro (Shake Sensor)</Text>
+                    <Text style={styles.sensorCardSubtitle}>Detección de Sacudida Física</Text>
+                  </View>
+                  <View style={styles.sensorStatusBadgeActive}>
+                    <Text style={styles.sensorStatusTextActive}>EN VIVO</Text>
+                  </View>
+                </View>
+
+                <View style={styles.sensorMetricRow}>
+                  <Text style={styles.sensorMetricLabel}>Fuerza Gravitacional G:</Text>
+                  <Text style={styles.sensorMetricVal}>{accelG.toFixed(2)} G</Text>
+                </View>
+
+                {/* Barra dinámica de fuerza G */}
+                <View style={styles.sensorBarTrack}>
+                  <View
+                    style={[
+                      styles.sensorBarFill,
+                      { width: `${Math.min(100, (accelG / 2.5) * 100)}%` }
+                    ]}
+                  />
+                </View>
+
+                <Text style={styles.sensorCardDesc}>
+                  Sacude físicamente tu dispositivo para reorganizar el catálogo al azar y desbloquear el cupón exclusivo del 20% de descuento (SHAKE20).
+                </Text>
+
+                <TouchableOpacity
+                  style={styles.sensorActionBtn}
+                  onPress={() => {
+                    handleShakeAction();
+                  }}
+                  activeOpacity={0.8}
+                >
+                  <Zap size={15} color="#FFFFFF" />
+                  <Text style={styles.sensorActionBtnText}>Simular Sacudida de Celular</Text>
+                </TouchableOpacity>
+
+                {lastShakeTimestamp && (
+                  <Text style={styles.lastEventText}>Última sacudida detectada: {lastShakeTimestamp}</Text>
+                )}
+              </View>
+
+              {/* SENSOR 2: GIROSCOPIO (INCLINACIÓN 3D Y PERSPECTIVA) */}
+              <View style={styles.sensorCard}>
+                <View style={styles.sensorCardHeader}>
+                  <View style={styles.sensorIconContainer}>
+                    <Compass size={18} color="#536B58" />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.sensorCardTitle}>2. Giroscopio (3D Parallax Tilt)</Text>
+                    <Text style={styles.sensorCardSubtitle}>Inclinación & Movimiento 3D</Text>
+                  </View>
+                  <View style={styles.sensorStatusBadgeActive}>
+                    <Text style={styles.sensorStatusTextActive}>ACTIVO</Text>
+                  </View>
+                </View>
+
+                <View style={styles.gyroAxisGrid}>
+                  <View style={styles.gyroAxisCol}>
+                    <Text style={styles.gyroAxisLabel}>Eje X</Text>
+                    <Text style={styles.gyroAxisVal}>{gyroData.x.toFixed(2)}</Text>
+                  </View>
+                  <View style={styles.gyroAxisCol}>
+                    <Text style={styles.gyroAxisLabel}>Eje Y</Text>
+                    <Text style={styles.gyroAxisVal}>{gyroData.y.toFixed(2)}</Text>
+                  </View>
+                  <View style={styles.gyroAxisCol}>
+                    <Text style={styles.gyroAxisLabel}>Eje Z</Text>
+                    <Text style={styles.gyroAxisVal}>{gyroData.z.toFixed(2)}</Text>
+                  </View>
+                </View>
+
+                <Text style={styles.sensorCardDesc}>
+                  Al abrir el detalle de cualquier prenda, inclina tu teléfono hacia los lados o arriba para ver la caída, reflejo y profundidad 3D de la tela.
+                </Text>
+
+                <TouchableOpacity
+                  style={[styles.sensorToggleBtn, parallax3dEnabled && styles.sensorToggleBtnActive]}
+                  onPress={() => {
+                    setParallax3dEnabled(!parallax3dEnabled);
+                    triggerPush(
+                      'Giroscopio 3D',
+                      !parallax3dEnabled ? 'Efecto 3D de telas activado.' : 'Efecto 3D pausado.'
+                    );
+                  }}
+                  activeOpacity={0.8}
+                >
+                  <Compass size={15} color={parallax3dEnabled ? '#FFFFFF' : '#1A1918'} />
+                  <Text style={[styles.sensorToggleBtnText, parallax3dEnabled && styles.sensorToggleBtnTextActive]}>
+                    {parallax3dEnabled ? 'Efecto 3D de Telas: Activado' : 'Efecto 3D de Telas: Pausado'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* SENSOR 3: GEOLOCALIZACIÓN GPS (RADAR DE BOUTIQUES) */}
+              <View style={styles.sensorCard}>
+                <View style={styles.sensorCardHeader}>
+                  <View style={styles.sensorIconContainer}>
+                    <Navigation size={18} color="#2A5C8A" />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.sensorCardTitle}>3. Geolocalización (GPS Radar)</Text>
+                    <Text style={styles.sensorCardSubtitle}>Ubicación & Cercanía de Boutiques</Text>
+                  </View>
+                  <View style={styles.sensorStatusBadgeActive}>
+                    <Text style={styles.sensorStatusTextActive}>GPS ON</Text>
+                  </View>
+                </View>
+
+                <View style={styles.gpsCoordinatesRow}>
+                  <Text style={styles.gpsCoordText}>
+                    Lat: <Text style={styles.bold}>{userCoords.latitude.toFixed(4)}</Text> • Lon: <Text style={styles.bold}>{userCoords.longitude.toFixed(4)}</Text>
+                  </Text>
+                </View>
+
+                {nearestBoutique && (
+                  <View style={styles.nearestBoutiqueBox}>
+                    <View style={styles.nearestBoutiqueHead}>
+                      <Text style={styles.nearestBoutiqueName}>{nearestBoutique.name}</Text>
+                      <View style={styles.distBadge}>
+                        <Text style={styles.distBadgeText}>
+                          {nearestBoutique.distanceKm < 1
+                            ? Math.round(nearestBoutique.distanceKm * 1000) + ' m'
+                            : nearestBoutique.distanceKm.toFixed(1) + ' km'}
+                        </Text>
+                      </View>
+                    </View>
+                    <Text style={styles.nearestBoutiqueAddress}>{nearestBoutique.address}</Text>
+                    <Text style={styles.nearestBoutiqueSchedule}>{nearestBoutique.schedule}</Text>
+                    <Text style={styles.nearestBoutiquePickup}>✓ Retiro Express en Atelier Disponible Hoy</Text>
+                  </View>
+                )}
+
+                <TouchableOpacity
+                  style={styles.gpsRefreshBtn}
+                  onPress={updateGpsLocation}
+                  disabled={isLocating}
+                  activeOpacity={0.8}
+                >
+                  <Radio size={15} color="#1A1918" />
+                  <Text style={styles.gpsRefreshBtnText}>
+                    {isLocating ? 'Calculando posición GPS...' : 'Actualizar Radar GPS'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                style={styles.modalAddBtn}
+                onPress={() => setIsSensorModalOpen(false)}
+              >
+                <Check size={18} color="#FFFFFF" />
+                <Text style={styles.modalAddBtnText}>Cerrar y Volver a la Tienda</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+
+  // ==========================================
+  // ESTILOS DE SENSORES HARDWARE
+  // ==========================================
+  headerSensorBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#E7EEE8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    borderWidth: 1,
+    borderColor: '#D4E2D6'
+  },
+  sensorActiveDot: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#536B58'
+  },
+  sensorQuickBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E8E4DA'
+  },
+  sensorQuickBarLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    flex: 1
+  },
+  sensorPulseDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+    backgroundColor: '#536B58'
+  },
+  sensorQuickBarText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#263629',
+    flex: 1
+  },
+  sensorQuickBarBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: '#E7EEE8',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 6
+  },
+  sensorQuickBarBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#536B58'
+  },
+  modalImageContainer: {
+    width: '100%',
+    height: 290,
+    position: 'relative',
+    overflow: 'hidden'
+  },
+  gyroBadge: {
+    position: 'absolute',
+    bottom: 12,
+    left: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    backgroundColor: 'rgba(26, 25, 24, 0.75)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8
+  },
+  gyroBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#FFFFFF'
+  },
+  sensorModalHeaderBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#E7EEE8',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginBottom: 8
+  },
+  sensorModalHeaderBadgeText: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#536B58',
+    letterSpacing: 0.5
+  },
+  sensorCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#E8E4DA'
+  },
+  sensorCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 10
+  },
+  sensorIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#F8F7F4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#E8E4DA'
+  },
+  sensorCardTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#1A1918'
+  },
+  sensorCardSubtitle: {
+    fontSize: 11,
+    color: '#6E6A63'
+  },
+  sensorStatusBadgeActive: {
+    backgroundColor: '#E7EEE8',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 6
+  },
+  sensorStatusTextActive: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#536B58'
+  },
+  sensorMetricRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6
+  },
+  sensorMetricLabel: {
+    fontSize: 11,
+    color: '#6E6A63'
+  },
+  sensorMetricVal: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#B56B47'
+  },
+  sensorBarTrack: {
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#EFECE6',
+    overflow: 'hidden',
+    marginBottom: 8
+  },
+  sensorBarFill: {
+    height: '100%',
+    backgroundColor: '#B56B47',
+    borderRadius: 3
+  },
+  sensorCardDesc: {
+    fontSize: 11,
+    color: '#6E6A63',
+    lineHeight: 15,
+    marginBottom: 10
+  },
+  sensorActionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: '#B56B47',
+    paddingVertical: 9,
+    borderRadius: 10
+  },
+  sensorActionBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#FFFFFF'
+  },
+  lastEventText: {
+    fontSize: 10,
+    color: '#536B58',
+    fontStyle: 'italic',
+    marginTop: 6,
+    textAlign: 'center'
+  },
+  gyroAxisGrid: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 10
+  },
+  gyroAxisCol: {
+    flex: 1,
+    backgroundColor: '#F8F7F4',
+    padding: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E8E4DA'
+  },
+  gyroAxisLabel: {
+    fontSize: 10,
+    color: '#8A867E',
+    fontWeight: '700'
+  },
+  gyroAxisVal: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#1A1918',
+    marginTop: 2
+  },
+  sensorToggleBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: '#F8F7F4',
+    borderWidth: 1,
+    borderColor: '#E8E4DA',
+    paddingVertical: 9,
+    borderRadius: 10
+  },
+  sensorToggleBtnActive: {
+    backgroundColor: '#1A1918',
+    borderColor: '#1A1918'
+  },
+  sensorToggleBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#1A1918'
+  },
+  sensorToggleBtnTextActive: {
+    color: '#FFFFFF'
+  },
+  gpsCoordinatesRow: {
+    backgroundColor: '#F8F7F4',
+    padding: 8,
+    borderRadius: 8,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#E8E4DA'
+  },
+  gpsCoordText: {
+    fontSize: 11,
+    color: '#524F4A',
+    textAlign: 'center'
+  },
+  nearestBoutiqueBox: {
+    backgroundColor: '#F7FAF7',
+    borderWidth: 1,
+    borderColor: '#D4E2D6',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10
+  },
+  nearestBoutiqueHead: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 3
+  },
+  nearestBoutiqueName: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#263629'
+  },
+  distBadge: {
+    backgroundColor: '#536B58',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6
+  },
+  distBadgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#FFFFFF'
+  },
+  nearestBoutiqueAddress: {
+    fontSize: 11,
+    color: '#524F4A'
+  },
+  nearestBoutiqueSchedule: {
+    fontSize: 10,
+    color: '#8A867E',
+    marginTop: 2
+  },
+  nearestBoutiquePickup: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#536B58',
+    marginTop: 4
+  },
+  gpsRefreshBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: '#F8F7F4',
+    borderWidth: 1,
+    borderColor: '#E8E4DA',
+    paddingVertical: 9,
+    borderRadius: 10
+  },
+  gpsRefreshBtnText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#1A1918'
+  },
+
   safeArea: {
     flex: 1,
     backgroundColor: '#F8F7F4'
