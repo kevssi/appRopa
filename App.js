@@ -1225,7 +1225,8 @@ const AUTUMN_PROMOS = [
     category: 'capas',
     categoryTitle: 'Capas & Outerwear',
     btnText: 'Explorar Capas',
-    image: 'https://images.unsplash.com/photo-1511280394622-399bb40a74e9?auto=format&fit=crop&w=1200&q=80'
+    bg: '#5A3D28',
+    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'autumn-2',
@@ -1235,7 +1236,8 @@ const AUTUMN_PROMOS = [
     category: 'sastreria',
     categoryTitle: 'Sastrería Fluida',
     btnText: 'Ver Sastrería',
-    image: 'https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?auto=format&fit=crop&w=1200&q=80'
+    bg: '#6E4E37',
+    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'autumn-3',
@@ -1245,7 +1247,8 @@ const AUTUMN_PROMOS = [
     category: 'punto',
     categoryTitle: 'Punto Suave',
     btnText: 'Ver Punto & Cuero',
-    image: 'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?auto=format&fit=crop&w=1200&q=80'
+    bg: '#3E463A',
+    image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
@@ -2830,144 +2833,148 @@ export default function App() {
           )}
         </View>
       ) : (
-        /* ============================================================== */
-        /* VISTA CLIENTE EXCLUSIVA (CATÁLOGO, COLECCIONES, FAVORITOS, BOLSA, MI CUENTA) */
-        /* CERO DASHBOARDS, CERO TABLAS DE BD, CERO TELEMETRÍA VISIBLE */
-        /* ============================================================== */
+        /* VISTA CLIENTE EXCLUSIVA */
         <View style={styles.flex1}>
           {/* PESTAÑA 1: CATÁLOGO */}
           {activeTab === 'catalog' && (
             <View style={styles.flex1}>
-                            {/* BARRA DE SENSORES Y RADAR BOUTIQUE DAL */}
-              <TouchableOpacity
-                style={styles.sensorQuickBar}
-                onPress={() => setIsSensorModalOpen(true)}
-                activeOpacity={0.88}
-              >
-                <View style={styles.sensorQuickBarLeft}>
-                  <View style={styles.sensorPulseDot} />
-                  <Radio size={13} color="#536B58" />
-                  <Text style={styles.sensorQuickBarText} numberOfLines={1}>
-                    {nearestBoutique
-                      ? `Radar GPS: ${nearestBoutique.name} (${nearestBoutique.distanceKm < 1 ? Math.round(nearestBoutique.distanceKm * 1000) + 'm' : nearestBoutique.distanceKm.toFixed(1) + 'km'})`
-                      : '3 Sensores Activos: Sacudida, Giroscopio 3D, GPS'}
-                  </Text>
-                </View>
-                <View style={styles.sensorQuickBarBadge}>
-                  <Text style={styles.sensorQuickBarBadgeText}>Ver Sensores</Text>
-                  <ArrowRight size={11} color="#536B58" />
-                </View>
-              </TouchableOpacity>
-
-              {/* Barra de Búsqueda Móvil */}
-              <View style={styles.searchContainer}>
-                <Search size={18} color="#8A867E" style={styles.searchIcon} />
-                <TextInput
-                  style={styles.searchInput}
-                  placeholder="Buscar por lino, sastrería, abrigos..."
-                  placeholderTextColor="#8A867E"
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                />
-                {searchQuery.length > 0 && (
-                  <TouchableOpacity onPress={() => setSearchQuery('')} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                    <X size={16} color="#8A867E" />
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              {/* SECCIÓN PROMOCIONAL DE OTOÑO (Exclusiva antes de iniciar sesión) */}
-              {!currentUser && (
-                <View style={styles.autumnPromoContainer}>
-                  <View style={styles.autumnHeaderRow}>
-                    <View style={styles.autumnBadge}>
-                      <Sparkles size={11} color="#B56B47" />
-                      <Text style={styles.autumnBadgeText}>CAMPAÑA OTOÑO 2026</Text>
-                    </View>
-                    <Text style={styles.autumnSeasonalLabel}>Edición Especial</Text>
-                  </View>
-
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.autumnScrollContent}
-                  >
-                    {AUTUMN_PROMOS.map((promo) => (
-                      <TouchableOpacity
-                        key={promo.id}
-                        style={styles.autumnPromoCard}
-                        activeOpacity={0.92}
-                        onPress={() => {
-                          if (promo.category) {
-                            setSelectedType(promo.category);
-                            triggerPush('Campaña Otoño', `Filtrando por ${promo.categoryTitle}.`);
-                          }
-                        }}
-                      >
-                        <Image source={{ uri: promo.image }} style={styles.autumnPromoImg} />
-                        <View style={styles.autumnCardGradient}>
-                          <View style={styles.autumnOfferTag}>
-                            <Text style={styles.autumnOfferTagText}>{promo.tag}</Text>
-                          </View>
-                          <Text style={styles.autumnCardTitle}>{promo.title}</Text>
-                          <Text style={styles.autumnCardSubtitle}>{promo.subtitle}</Text>
-                          <View style={styles.autumnActionRow}>
-                            <Text style={styles.autumnActionText}>{promo.btnText}</Text>
-                            <ArrowRight size={13} color="#FFFFFF" />
-                          </View>
-                        </View>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              )}
-
-              {/* Selector Horizontal de Familias Textiles */}
-              <View style={styles.typesScrollWrapper}>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.typesScrollContent}
-                >
-                  {CLOTHING_TYPES.map((type) => {
-                    const isActive = selectedType === type.id;
-                    return (
-                      <TouchableOpacity
-                        key={type.id}
-                        style={[styles.typeChip, isActive && styles.typeChipActive]}
-                        onPress={() => setSelectedType(type.id)}
-                      >
-                        <Text style={[styles.typeChipText, isActive && styles.typeChipTextActive]}>
-                          {type.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </ScrollView>
-              </View>
-
-              {/* Barra de Conteo y Botón Mezclar al Azar */}
-              <View style={styles.catalogActionBar}>
-                <Text style={styles.catalogItemsCount}>
-                  {filteredProducts.length} prendas exclusivas
-                </Text>
-                <TouchableOpacity
-                  style={styles.shuffleBtn}
-                  onPress={handleShuffleProducts}
-                  activeOpacity={0.7}
-                >
-                  <Sparkles size={13} color="#536B58" />
-                  <Text style={styles.shuffleBtnText}>Mezclar al azar</Text>
-                </TouchableOpacity>
-              </View>
-
-              {/* Grilla Móvil de 2 Columnas de Prendas */}
+              {/* Grilla Móvil de 2 Columnas de Prendas con Cabecera Integrada en el Scroll */}
               <FlatList
                 data={filteredProducts}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={2}
                 contentContainerStyle={styles.productList}
                 showsVerticalScrollIndicator={false}
+                ListHeaderComponent={
+                  <View style={styles.catalogHeaderContainer}>
+                    {/* BARRA DE SENSORES Y RADAR BOUTIQUE DAL */}
+                    <TouchableOpacity
+                      style={styles.sensorQuickBar}
+                      onPress={() => setIsSensorModalOpen(true)}
+                      activeOpacity={0.88}
+                    >
+                      <View style={styles.sensorQuickBarLeft}>
+                        <View style={styles.sensorPulseDot} />
+                        <Radio size={13} color="#536B58" />
+                        <Text style={styles.sensorQuickBarText} numberOfLines={1}>
+                          {nearestBoutique
+                            ? `Radar GPS: ${nearestBoutique.name} (${nearestBoutique.distanceKm < 1 ? Math.round(nearestBoutique.distanceKm * 1000) + 'm' : nearestBoutique.distanceKm.toFixed(1) + 'km'})`
+                            : '3 Sensores Activos: Sacudida, Giroscopio 3D, GPS'}
+                        </Text>
+                      </View>
+                      <View style={styles.sensorQuickBarBadge}>
+                        <Text style={styles.sensorQuickBarBadgeText}>Ver Sensores</Text>
+                        <ArrowRight size={11} color="#536B58" />
+                      </View>
+                    </TouchableOpacity>
+
+                    {/* Barra de Búsqueda Móvil */}
+                    <View style={styles.searchContainer}>
+                      <Search size={18} color="#8A867E" style={styles.searchIcon} />
+                      <TextInput
+                        style={styles.searchInput}
+                        placeholder="Buscar por lino, sastrería, abrigos..."
+                        placeholderTextColor="#8A867E"
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                      />
+                      {searchQuery.length > 0 && (
+                        <TouchableOpacity onPress={() => setSearchQuery('')} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                          <X size={16} color="#8A867E" />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+
+                    {/* SECCIÓN PROMOCIONAL DE OTOÑO (Exclusiva antes de iniciar sesión) */}
+                    {!currentUser && (
+                      <View style={styles.autumnPromoContainer}>
+                        <View style={styles.autumnHeaderRow}>
+                          <View style={styles.autumnBadge}>
+                            <Sparkles size={11} color="#B56B47" />
+                            <Text style={styles.autumnBadgeText}>CAMPAÑA OTOÑO 2026</Text>
+                          </View>
+                          <Text style={styles.autumnSeasonalLabel}>Edición Especial</Text>
+                        </View>
+
+                        <ScrollView
+                          horizontal
+                          showsHorizontalScrollIndicator={false}
+                          contentContainerStyle={styles.autumnScrollContent}
+                        >
+                          {AUTUMN_PROMOS.map((promo) => (
+                            <TouchableOpacity
+                              key={promo.id}
+                              style={[styles.autumnPromoCard, { backgroundColor: promo.bg || '#5A3D28' }]}
+                              activeOpacity={0.92}
+                              onPress={() => {
+                                if (promo.category) {
+                                  setSelectedType(promo.category);
+                                  triggerPush('Campaña Otoño', `Filtrando por ${promo.categoryTitle}.`);
+                                }
+                              }}
+                            >
+                              <Image
+                                source={{ uri: promo.image }}
+                                style={styles.autumnPromoImg}
+                                resizeMode="cover"
+                              />
+                              <View style={styles.autumnCardGradient}>
+                                <View style={styles.autumnOfferTag}>
+                                  <Text style={styles.autumnOfferTagText}>{promo.tag}</Text>
+                                </View>
+                                <Text style={styles.autumnCardTitle}>{promo.title}</Text>
+                                <Text style={styles.autumnCardSubtitle}>{promo.subtitle}</Text>
+                                <View style={styles.autumnActionRow}>
+                                  <Text style={styles.autumnActionText}>{promo.btnText}</Text>
+                                  <ArrowRight size={13} color="#FFFFFF" />
+                                </View>
+                              </View>
+                            </TouchableOpacity>
+                          ))}
+                        </ScrollView>
+                      </View>
+                    )}
+
+                    {/* Selector Horizontal de Familias Textiles */}
+                    <View style={styles.typesScrollWrapper}>
+                      <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.typesScrollContent}
+                      >
+                        {CLOTHING_TYPES.map((type) => {
+                          const isActive = selectedType === type.id;
+                          return (
+                            <TouchableOpacity
+                              key={type.id}
+                              style={[styles.typeChip, isActive && styles.typeChipActive]}
+                              onPress={() => setSelectedType(type.id)}
+                            >
+                              <Text style={[styles.typeChipText, isActive && styles.typeChipTextActive]}>
+                                {type.label}
+                              </Text>
+                            </TouchableOpacity>
+                          );
+                        })}
+                      </ScrollView>
+                    </View>
+
+                    {/* Barra de Conteo y Botón Mezclar al Azar */}
+                    <View style={styles.catalogActionBar}>
+                      <Text style={styles.catalogItemsCount}>
+                        {filteredProducts.length} prendas exclusivas
+                      </Text>
+                      <TouchableOpacity
+                        style={styles.shuffleBtn}
+                        onPress={handleShuffleProducts}
+                        activeOpacity={0.7}
+                      >
+                        <Sparkles size={13} color="#536B58" />
+                        <Text style={styles.shuffleBtnText}>Mezclar al azar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                }
                 renderItem={({ item }) => {
                   const isFav = wishlist.includes(item.id);
                   const isOutOfStock = item.stock <= 0;
@@ -5883,7 +5890,11 @@ const styles = StyleSheet.create({
   },
 
   // Grilla de Productos
-    // Sección Promocional de Otoño (Antes de Iniciar Sesión)
+  catalogHeaderContainer: {
+    width: '100%',
+    marginBottom: 6
+  },
+  // Sección Promocional de Otoño (Antes de Iniciar Sesión)
   autumnPromoContainer: {
     marginVertical: 10
   },
