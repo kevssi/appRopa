@@ -1,10 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import Stripe from 'stripe';
 import { pool, isConnected } from './db.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_51MzDemoDalAtelierSecretKey9823482394782394723984', {
   apiVersion: '2023-10-16'
