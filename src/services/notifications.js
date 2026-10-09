@@ -19,6 +19,9 @@ Notifications.setNotificationHandler({
  * y obtener el Token FCM del dispositivo para vincularlo a Firebase.
  */
 export async function registerForPushNotificationsAsync() {
+  if (Platform.OS === 'web') {
+    return null;
+  }
   let token = null;
 
   // En Android 8.0+ (Oreo en adelante), los canales de notificación son OBLIGATORIOS

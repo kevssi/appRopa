@@ -1539,20 +1539,44 @@ export default function App() {
     try {
       setIsLocating(true);
       let coords = { latitude: 19.4194, longitude: -99.1622 }; // Roma Norte default
-      try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status === 'granted') {
-          const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-          if (loc && loc.coords) {
-            coords = {
-              latitude: loc.coords.latitude,
-              longitude: loc.coords.longitude
-            };
+
+      if (Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.geolocation) {
+        try {
+          await new Promise((resolve) => {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                if (pos && pos.coords) {
+                  coords = {
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude
+                  };
+                  setSensorsActive((prev) => ({ ...prev, location: true }));
+                }
+                resolve();
+              },
+              () => {
+                resolve(); // Fallback silencioso a Roma Norte
+              },
+              { timeout: 3000 }
+            );
+          });
+        } catch (e) {}
+      } else {
+        try {
+          const { status } = await Location.requestForegroundPermissionsAsync();
+          if (status === 'granted') {
+            const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+            if (loc && loc.coords) {
+              coords = {
+                latitude: loc.coords.latitude,
+                longitude: loc.coords.longitude
+              };
+            }
+            setSensorsActive((prev) => ({ ...prev, location: true }));
           }
-          setSensorsActive((prev) => ({ ...prev, location: true }));
+        } catch (e) {
+          console.log('Permiso GPS omitido, usando fallback:', e);
         }
-      } catch (e) {
-        console.log('Permiso GPS omitido, usando fallback:', e);
       }
 
       setUserCoords(coords);
@@ -1588,92 +1612,183 @@ export default function App() {
     let isMounted = true;
     let lastShakeTime = 0;
 
-    // SENSOR 1: Acelerómetro (Detección de Sacudida del dispositivo)
-    const startAccelerometer = async () => {
-      try {
-        const available = await Accelerometer.isAvailableAsync();
-        if (available && isMounted) {
-          Accelerometer.setUpdateInterval(150);
-          accelSubscription = Accelerometer.addListener(({ x, y, z }) => {
-            const currentG = Math.sqrt(x * x + y * y + z * z);
-            setAccelG(currentG);
-
-            // Umbral de sacudida (Shake Trigger)
-            const now = Date.now();
-            if (currentG > 1.85 && now - lastShakeTime > 2500) {
-              lastShakeTime = now;
-              handleShakeAction();
-            }
-          });
-          setSensorsActive((prev) => ({ ...prev, accelerometer: true }));
-        }
-      } catch (err) {
-        console.log('Acelerómetro no disponible:', err);
-      }
-    };
-
-    // SENSOR 2: Giroscopio (Inclinación 3D de Telas)
-    const startGyroscope = async () => {
-      try {
-        const available = await Gyroscope.isAvailableAsync();
-        if (available && isMounted) {
-          Gyroscope.setUpdateInterval(100);
-          gyroSubscription = Gyroscope.addListener((data) => {
-            setGyroData(data);
-          });
-          setSensorsActive((prev) => ({ ...prev, gyroscope: true }));
-        }
-      } catch (err) {
-        console.log('Giroscopio no disponible:', err);
-      }
-    };
-
     // SENSOR 3: GPS / Geolocalización (Radar de Boutiques Dal)
     updateGpsLocation();
 
-    startAccelerometer();
-    startGyroscope();
+    if (Platform.OS === 'web') {
+      // ==========================================
+      // INTEGRACIÓN WEB: HTML5 Device Motion, Orientation & Mouse Parallax
+      // ==========================================
+      const handleMotion = (event) => {
+        if (!isMounted) return;
+        const acc = event.accelerationIncludingGravity || event.acceleration;
+        if (acc && (acc.x !== null || acc.y !== null)) {
+          const x = acc.x || 0;
+          const y = acc.y || 0;
+          const z = acc.z || 9.8;
+          const currentG = Math.sqrt(x * x + y * y + z * z) / 9.8;
+          setAccelG(currentG);
+          const now = Date.now();
+          if (currentG > 1.85 && now - lastShakeTime > 2500) {
+            lastShakeTime = now;
+            handleShakeAction();
+          }
+        }
+      };
 
-    return () => {
-      isMounted = false;
-      if (accelSubscription) accelSubscription.remove();
-      if (gyroSubscription) gyroSubscription.remove();
-    };
+      const handleOrientation = (event) => {
+        if (!isMounted) return;
+        if (event.gamma !== null || event.beta !== null) {
+          const radX = ((event.beta || 0) * Math.PI) / 180;
+          const radY = ((event.gamma || 0) * Math.PI) / 180;
+          setGyroData({ x: radX, y: radY, z: 0 });
+        }
+      };
+
+      const handleMouseMove = (event) => {
+        if (!isMounted) return;
+        if (typeof window !== 'undefined') {
+          const centerX = window.innerWidth / 2;
+          const centerY = window.innerHeight / 2;
+          const tiltX = (event.clientY - centerY) / centerY;
+          const tiltY = (event.clientX - centerX) / centerX;
+          setGyroData((prev) => ({
+            ...prev,
+            x: tiltX * 0.7,
+            y: tiltY * 0.7
+          }));
+        }
+      };
+
+      if (typeof window !== 'undefined') {
+        window.addEventListener('devicemotion', handleMotion);
+        window.addEventListener('deviceorientation', handleOrientation);
+        window.addEventListener('mousemove', handleMouseMove);
+      }
+
+      setSensorsActive({
+        accelerometer: true,
+        gyroscope: true,
+        location: true
+      });
+
+      return () => {
+        isMounted = false;
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('devicemotion', handleMotion);
+          window.removeEventListener('deviceorientation', handleOrientation);
+          window.removeEventListener('mousemove', handleMouseMove);
+        }
+      };
+    } else {
+      // ==========================================
+      // INTEGRACIÓN NATIVA: expo-sensors en Android / iOS
+      // ==========================================
+      const startAccelerometer = async () => {
+        try {
+          const available = await Accelerometer.isAvailableAsync();
+          if (available && isMounted) {
+            Accelerometer.setUpdateInterval(150);
+            accelSubscription = Accelerometer.addListener(({ x, y, z }) => {
+              const currentG = Math.sqrt(x * x + y * y + z * z);
+              setAccelG(currentG);
+
+              // Umbral de sacudida (Shake Trigger)
+              const now = Date.now();
+              if (currentG > 1.85 && now - lastShakeTime > 2500) {
+                lastShakeTime = now;
+                handleShakeAction();
+              }
+            });
+            setSensorsActive((prev) => ({ ...prev, accelerometer: true }));
+          }
+        } catch (err) {
+          console.log('Acelerómetro no disponible:', err);
+        }
+      };
+
+      const startGyroscope = async () => {
+        try {
+          const available = await Gyroscope.isAvailableAsync();
+          if (available && isMounted) {
+            Gyroscope.setUpdateInterval(100);
+            gyroSubscription = Gyroscope.addListener((data) => {
+              setGyroData(data);
+            });
+            setSensorsActive((prev) => ({ ...prev, gyroscope: true }));
+          }
+        } catch (err) {
+          console.log('Giroscopio no disponible:', err);
+        }
+      };
+
+      startAccelerometer();
+      startGyroscope();
+
+      return () => {
+        isMounted = false;
+        if (accelSubscription) accelSubscription.remove();
+        if (gyroSubscription) gyroSubscription.remove();
+      };
+    }
   }, []);
 
-  // Escuchadores de Notificaciones Push (Primer plano, Segundo plano y App cerrada)
+  // Escuchadores de Notificaciones Push (Primer plano, Segundo plano y App cerrada en móvil)
   useEffect(() => {
+    if (Platform.OS === 'web') {
+      return; // En Web no se registran listeners nativos de FCM que arrojan errores de plataforma
+    }
+
+    let notificationListener = null;
+    let responseListener = null;
+
     // 1. Solicitar permisos y obtener Token FCM
     registerForPushNotificationsAsync().then((token) => {
       if (token) {
         setFcmToken(token);
         sendTokenToBackend(token, currentUser?.email || 'cliente@dal.com');
       }
-    });
+    }).catch(() => {});
 
     // 2. Notificación recibida en PRIMER PLANO (Foreground)
-    const notificationListener = Notifications.addNotificationReceivedListener((notification) => {
-      const { title, body } = notification.request.content;
-      triggerPush(title || 'Notificación Dal', body || '');
-    });
+    try {
+      if (Notifications.addNotificationReceivedListener) {
+        notificationListener = Notifications.addNotificationReceivedListener((notification) => {
+          const { title, body } = notification.request.content;
+          triggerPush(title || 'Notificación Dal', body || '');
+        });
+      }
+    } catch (e) {}
 
     // 3. Usuario TOCA la notificación (Segundo plano o cerrada)
-    const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      const data = response.notification.request.content.data;
-      handleNotificationOpen(data);
-    });
+    try {
+      if (Notifications.addNotificationResponseReceivedListener) {
+        responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
+          const data = response.notification.request.content.data;
+          handleNotificationOpen(data);
+        });
+      }
+    } catch (e) {}
 
     // 4. Caso App Completamente Cerrada (Cold Start)
-    Notifications.getLastNotificationResponseAsync().then((response) => {
-      if (response) {
-        const data = response.notification.request.content.data;
-        handleNotificationOpen(data);
+    try {
+      if (typeof Notifications.getLastNotificationResponseAsync === 'function') {
+        Notifications.getLastNotificationResponseAsync().then((response) => {
+          if (response) {
+            const data = response.notification.request.content.data;
+            handleNotificationOpen(data);
+          }
+        }).catch(() => {});
       }
-    });
+    } catch (e) {}
 
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
+      if (notificationListener) {
+        try { Notifications.removeNotificationSubscription(notificationListener); } catch (e) {}
+      }
+      if (responseListener) {
+        try { Notifications.removeNotificationSubscription(responseListener); } catch (e) {}
+      }
     };
   }, []);
 
@@ -3373,6 +3488,44 @@ export default function App() {
                         <LogIn size={18} color="#FFFFFF" />
                         <Text style={styles.primaryAuthBtnText}>Iniciar Sesión</Text>
                       </TouchableOpacity>
+
+                      {/* Accesos Rápidos de Prueba (1-Tap) */}
+                      <View style={styles.quickAccessSection}>
+                        <Text style={styles.quickAccessTitle}>Cuentas de Prueba (1-Toque):</Text>
+                        <View style={styles.quickAccessBtnsRow}>
+                          <TouchableOpacity
+                            style={styles.quickAccessBtn}
+                            onPress={() => {
+                              setLoginEmail('cliente@dal.com');
+                              setLoginPassword('password');
+                              const found = users.find((u) => u.email === 'cliente@dal.com');
+                              if (found) {
+                                setCurrentUser(found);
+                                triggerPush('Bienvenido', 'Sesión iniciada como Mateo Navarro (Cliente).');
+                              }
+                            }}
+                          >
+                            <User size={13} color="#536B58" />
+                            <Text style={styles.quickAccessBtnText}>Cliente Demo</Text>
+                          </TouchableOpacity>
+
+                          <TouchableOpacity
+                            style={[styles.quickAccessBtn, { borderColor: '#B56B47' }]}
+                            onPress={() => {
+                              setLoginEmail('admin@dal.com');
+                              setLoginPassword('admin');
+                              const found = users.find((u) => u.email === 'admin@dal.com');
+                              if (found) {
+                                setCurrentUser(found);
+                                triggerPush('Panel Activado', 'Sesión iniciada como Elena Valdés (Admin).');
+                              }
+                            }}
+                          >
+                            <ShieldCheck size={13} color="#B56B47" />
+                            <Text style={[styles.quickAccessBtnText, { color: '#B56B47' }]}>Admin Demo</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
 
                       <TouchableOpacity
                         style={styles.authSwitchPrompt}
